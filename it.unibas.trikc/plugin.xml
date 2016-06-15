@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+   <extension
+         point="org.eclipse.ui.commands">
+      <category
+            name="Sample Category"
+            id="it.unibas.trikc.commands.category">
+      </category>
+      <command
+            name="Sample Command"
+            categoryId="it.unibas.trikc.commands.category"
+            id="it.unibas.trikc.commands.sampleCommand">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            commandId="it.unibas.trikc.commands.sampleCommand"
+            class="it.unibas.trikc.handlers.SampleHandler">
+      </handler>
+   </extension>
+   <extension
+         point="org.eclipse.ui.bindings">
+      <key
+            commandId="it.unibas.trikc.commands.sampleCommand"
+            contextId="org.eclipse.ui.contexts.window"
+            sequence="M1+6"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration">
+      </key>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="menu:org.eclipse.ui.main.menu?after=additions">
+         <menu
+               label="Sample Menu"
+               mnemonic="M"
+               id="it.unibas.trikc.menus.sampleMenu">
+            <command
+                  commandId="it.unibas.trikc.commands.sampleCommand"
+                  mnemonic="S"
+                  id="it.unibas.trikc.menus.sampleCommand">
+            </command>
+         </menu>
+      </menuContribution>
+      <menuContribution
+            locationURI="toolbar:org.eclipse.ui.main.toolbar?after=additions">
+         <toolbar
+               id="it.unibas.trikc.toolbars.sampleToolbar">
+            <command
+                  commandId="it.unibas.trikc.commands.sampleCommand"
+                  icon="icons/sample.gif"
+                  tooltip="Say hello world"
+                  id="it.unibas.trikc.toolbars.sampleCommand">
+            </command>
+         </toolbar>
+      </menuContribution>
+   </extension>
+
+</plugin>
