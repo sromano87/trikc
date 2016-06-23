@@ -2,6 +2,8 @@ package it.unibas.trikc.modelEntity.compositeClass;
 
 import java.util.List;
 
+
+import it.unibas.trikc.modelEntity.Package;
 import it.unibas.trikc.modelEntity.method.IMethod;
 
 public interface IClass {
