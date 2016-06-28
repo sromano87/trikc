@@ -15,20 +15,18 @@ public interface IStrategyJunit {
 
 	public TestSuite getTestSuite();
 	public void setTestSuite(TestSuite testSuite);
-	public String getClassName();
-	public void setClassName(String className);
 	public IClass getClazz();
 	public void setClazz(IClass clazz);
 	public JacocoServices getJacocoServices();
 	public void setJacocoServices(JacocoServices jacocoServices);
 	public void setTestSuiteClass(Class<junit.framework.TestSuite> testSuiteClass);
 	public Class<junit.framework.TestSuite> getTestSuiteClass();
-	
+
 	/**
-	 * Explore the classes that belong to the TestSuite and run all the test
+	 * Explores the classes that belong to the TestSuite and runs all the test
 	 * after they have been instrumented
 	 * 
-	 * @return {@link TestSuite} the testSuite containing all tests performed and the lines covered
+	 * @return {@link TestSuite} the testSuite containing all the performed tests and the covered lines
 	 */
 	public TestSuite executeCoverage() throws Exception;
 }

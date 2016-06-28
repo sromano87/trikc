@@ -14,7 +14,7 @@ import it.unibas.trikc.modelEntity.method.MyMethod;
 import it.unibas.trikc.modelEntity.method.TestCase;
 
 /**
- * Abstract class that implements {@link IStrategyUnit}
+ * Abstract class that implements {@link IStrategyJunit}
  *
  * 
  * @author TeamCoverage
@@ -22,52 +22,81 @@ import it.unibas.trikc.modelEntity.method.TestCase;
 public abstract class AbstractStrategyJunit implements IStrategyJunit{
 	
 	private TestSuite testSuite;
-	private String className;
 	private IClass clazz;
 	private JacocoServices jacocoServices = new JacocoServices();
 	private Class<junit.framework.TestSuite> testSuiteClass;
 	
+	/**
+	 * @return testSuite 
+	 * 				the filled {@link TestSuite}
+	 * */
 	public TestSuite getTestSuite() {
 		return testSuite;
 	}
 	
+	/**
+	 * @param testSuite 
+	 * 				the {@link TestSuite} to fill
+	 * */
 	public void setTestSuite(TestSuite testSuite) {
 		this.testSuite = testSuite;
 	}
 	
-
-	public String getClassName() {
-		return className;
-	}
-
-	public void setClassName(String className) {
-		this.className = className;
-	}
-
+	/**
+	 * @return class
+	 * 			 the class to analyze
+	 * */
 	public IClass getClazz() {
 		return clazz;
 	}
 
+	/**
+	 * @param clazz
+	 * 				the class to analyze
+	 * */
 	public void setClazz(IClass clazz) {
 		this.clazz = clazz;
 	}
 
+	/**
+	 * @return jacocoServices 
+	 * 					the instance of the jacocoService class to use
+	 * */
 	public JacocoServices getJacocoServices() {
 		return jacocoServices;
 	}
 
+	/**
+	 * @param jacocoServices 
+	 * 					the instance of the jacocoService class to use
+	 * */
 	public void setJacocoServices(JacocoServices jacocoServices) {
 		this.jacocoServices = jacocoServices;
 	}
 	
+	/**
+	 * @return testSuiteClass 
+	 * 					the test suite class to run
+	 * */
 	public Class<junit.framework.TestSuite> getTestSuiteClass() {
 		return testSuiteClass;
 	}
 
+	/**
+	 * @param testSuiteClass 
+	 * 					the test suite class to run
+	 * */
 	public void setTestSuiteClass(Class<junit.framework.TestSuite> testSuiteClass) {
 		this.testSuiteClass = testSuiteClass;
 	}
 	
+	/**
+	 * Finds a {@link TestCase} in the {@link TestSuite} by the name and returns it
+	 * if it does not exist creates a new one
+	 * 
+	 * @return testCase 
+	 * 				
+	 * */
 	public TestCase findTestCase(String nameTestMethod) {
 		for(TestCase test : testSuite.getTestCases()) {
 			if(test.getFullName().equals(nameTestMethod)) {
@@ -80,15 +109,15 @@ public abstract class AbstractStrategyJunit implements IStrategyJunit{
 		return testCase;
 	}
 	
-	/**Analyzes the coverage calculated by JaCoCo and create {@link Line}, {@link MyMethod}
+	/**Analyzes the coverage calculated by JaCoCo and creates {@link Line}, {@link MyMethod}
 	 * 
-	 * @param coverageBuilder: 
+	 * @param coverageBuilder 
 	 * 					{@link CoverageBuilder}	result of the coverage
-	 * @param clazz:
-	 * 				{@link IClass} to add the methods created
+	 * @param clazz
+	 * 				{@link IClass} to add the created methods
 	 * 
-	 * @param testCase:
-	 * 				{@link TestCase} to add the lines covered
+	 * @param testCase
+	 * 				{@link TestCase} to add the covered lines
 	 * 
 	 * */
 	public void analyzeResult(CoverageBuilder coverageBuilder,IClass clazz, TestCase testCase) {
@@ -117,6 +146,7 @@ public abstract class AbstractStrategyJunit implements IStrategyJunit{
 		}		
 	}
 
+	/**Creates the {@link Line}*/
 	public Line createLine(int number, String methodFullName) {
 		String lineId = methodFullName + "." + number;
 		Line line = new Line();
@@ -125,6 +155,13 @@ public abstract class AbstractStrategyJunit implements IStrategyJunit{
 		return line;
 	}
 	
+	/**
+	 * Finds a {@link MyMethod} in the {@link IClass} by the name and returns it
+	 * if it does not exist return null
+	 * 
+	 * @return method
+	 * 				
+	 * */
 	private MyMethod findMethod(IClass clazz, String methodName) {
 		for(IMethod m : clazz.getMethods()) {
 			if(m.getFullName().equals(methodName)) {

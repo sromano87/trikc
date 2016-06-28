@@ -12,9 +12,9 @@ import it.unibas.trikc.modelEntity.TestSuite;
 import it.unibas.trikc.modelEntity.method.TestCase;
 
 /**
- * Class that implements pattern strategy
+ * Class that implements the strategy pattern
  * extends {@link AbstractStrategyJunit}
- * used when the TestSuite to analyze uses Junit4
+ * used when the {@link TestSuite} to analyze, uses Junit4
  *
  * 
  * @author TeamCoverage
@@ -31,14 +31,14 @@ public class StrategyJunit4 extends AbstractStrategyJunit{
 			Class<?> testClass = testClasses[i];
 			Method[] methods = testClass.getDeclaredMethods();
 			for(int cm = 0; cm < methods.length; cm++) {
-				Class<?> testClassToCoverage = super.getJacocoServices().createInstrument(super.getClassName(), testClass.getName());
+				Class<?> testClassToCoverage = super.getJacocoServices().createInstrument(super.getClazz().getFullName(), testClass.getName());
 				if(!methods[cm].isAnnotationPresent(Before.class) && !methods[cm].getName().contains("jacoco")) {
 					String nameTestMethod = testClass.getName() + "." + methods[cm].getName();	
 					TestCase testCase = this.findTestCase(nameTestMethod);
 					Request request = Request.method(testClassToCoverage, methods[cm].getName());
 					new JUnitCore().run(request);
 						
-					CoverageBuilder coverageBuilder = super.getJacocoServices().collectAnalysis(super.getClassName());
+					CoverageBuilder coverageBuilder = super.getJacocoServices().collectAnalysis(super.getClazz().getFullName());
 					analyzeResult(coverageBuilder, super.getClazz(), testCase);	
 				}
 				super.getJacocoServices().runtimeShutdown();	

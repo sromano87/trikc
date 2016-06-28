@@ -2,6 +2,7 @@ package it.unibas.trikc.coverage;
 
 
 import java.io.InputStream;
+import java.util.logging.Handler;
 
 import org.jacoco.core.analysis.Analyzer;
 import org.jacoco.core.analysis.CoverageBuilder;
@@ -12,10 +13,8 @@ import org.jacoco.core.runtime.IRuntime;
 import org.jacoco.core.runtime.LoggerRuntime;
 import org.jacoco.core.runtime.RuntimeData;
 
-
-
 /**
- * Class of service used as a bridge to the library JaCoCo
+ * Service class used as a bridge to the JaCoCo library
  * 
  * 
  * @author TeamCoverage
@@ -35,17 +34,21 @@ public class JacocoServices {
 	private RuntimeData runtimeData = new RuntimeData();
 	private SessionInfoStore sessionInfoStore = new SessionInfoStore();
 	private ExecutionDataStore executionDataStore = new ExecutionDataStore();
+	
+	/** 
+	 *  This {@link IRuntime} implementation uses the Java logging API to report
+	 * coverage data.*/
 	private IRuntime runtime = new LoggerRuntime();
 	private MemoryClassLoader memoryClassLoader;
 	
 	/**
 	 * Return the test class that has been instrumented by JaCoCo
-	 * This method also instruments the source class and adds both to the {@link MemoryClassLoader}
+	 * This method also instruments the source class and adds both of them to the {@link MemoryClassLoader}
 	 * 
 	 * 
-	 * @param className:
+	 * @param className
 	 *            name of the source class to instrument
-	 * @param testClassName:
+	 * @param testClassName
 	 *            name of the test class to instrument
 	 * 
 	 * @see it.unibas.trikc.coverage.MemoryClassLoader
@@ -72,11 +75,19 @@ public class JacocoServices {
 		return testClassToCoverage;
 	}
 
+	/**
+	 * Initializes the JaCoCo container for runtime execution and meta data,
+	 * adding a {@link Handler} to the runtime
+	 */
 	public void runtimeStartup() throws Exception {
 		this.runtimeData = new RuntimeData();
 		this.runtime.startup(runtimeData);
 	}
 	
+	/**
+	 * Cleans the JaCoCo container for runtime execution and meta data
+	 * removing {@link Handler} to the runtime
+	 */
 	public void runtimeShutdown() {
 		runtime.shutdown();
 	}
@@ -95,9 +106,9 @@ public class JacocoServices {
 	 * The result of the coverage is saved in a {@link CoverageBuilder}
 	 * 
 	 * 
-	 * @return coverageBuilder:
+	 * @return coverageBuilder
 	 * 			
-	 * @param className:
+	 * @param className
 	 *            name of the source class to analyze
 	 */
 	public CoverageBuilder collectAnalysis(String className) throws Exception {
@@ -109,16 +120,31 @@ public class JacocoServices {
 		
 	}
 	
+	/**
+	 * Return the class as an {@link InputStream} instance
+	 * 
+	 * @param className
+	 * @return inputStream 
+	 * @throws java.lang.Exception
+	 * */
 	private InputStream getClassAsStream(final String className) throws Exception {
 		final String resourceName = className.replace('.', '/') + ".class";
-		InputStream i = memoryClassLoader.getResourceAsStream(resourceName);
-		return i;
+		InputStream inputStream = memoryClassLoader.getResourceAsStream(resourceName);
+		return inputStream;
 	}
 
+	/**
+	 * @return memoryClassLoader 
+	 * 				the {@link MemoryClassLoader} to use to load the classes
+	 * */
 	public MemoryClassLoader getMemoryClassLoader() {
 		return memoryClassLoader;
 	}
-
+	
+	/**
+	 * @param memoryClassLoader
+	 * 				the {@link MemoryClassLoader} to use to load the classes
+	 * */
 	public void setMemoryClassLoader(MemoryClassLoader memoryClassLoader) {
 		this.memoryClassLoader = memoryClassLoader;
 	}

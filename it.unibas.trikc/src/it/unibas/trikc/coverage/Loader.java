@@ -2,9 +2,7 @@ package it.unibas.trikc.coverage;
 
 import java.io.File;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import it.unibas.trikc.modelEntity.Package;
@@ -16,8 +14,8 @@ import it.unibas.trikc.modelEntity.compositeClass.LeafNestedClass;
 
 
 /**
- * Instance of the pattern singleton.
- * It is to explore the structure of the SUT
+ * Instance of the singleton pattern.
+ * It allows to explore the structure of the SUT
  * It is also responsible for initializing the {@link MemoryClassLoader}
  * 
  * @author TeamCoverage
@@ -32,37 +30,63 @@ public class Loader {
 
 	private Loader() {};
 	
+	/**
+	 * @return singleton
+	 * 					the unique instance of the class*/
 	public static Loader getInstance() {
 		return singleton;
 	}
 	
-	protected String getBinPath() {
+	/**
+	 * @return binPath 
+	 * 				string representing the full bin folder path 
+	 * */		
+	public String getBinPath() {
 		return binPath;
 	}
+	
+	/**
+	 * @param binPath
+	 * 				string representing the full bin folder path
+	 * */
 	public void setBinPath(String binPath) {
 		this.binPath = binPath;
 	}
 	
-	protected String getTestSuiteName() {
+	/**
+	 * @return testSuiteName: 
+	 * 				the fully-qualified name of the TestSuite to analyze
+	 * */
+	public String getTestSuiteName() {
 		return testSuiteName;
 	}
+	
+	/**
+	 * @param testSuiteName 
+	 * 				the fully-qualified name of the TestSuite to analyze
+	 * */
 	public void setTestSuiteName(String testSuiteName) {
 		this.testSuiteName = testSuiteName;
 	}
 	
+	/**
+	 * @return classesPackages 
+	 * 						map containing the source classes packages
+	 * */
 	public Map<String, Package> getMapClassesPackages() {
 		return this.mapClassesPackages;
 	}
 	
+
 	public Package findClassesPackageByKey(String key) {
 		return mapClassesPackages.get(key);
 	}
 	
 	/**
-	 * Explores the structure of the SUT 
+	 * Visits the structure of the SUT 
 	 * to find packages and classes 
 	 * 
-	 * @param coverage:
+	 * @param coverage
 	 *           object in which to put properties
 	 *            
 	 * @throws java.lang.Exception
@@ -78,6 +102,11 @@ public class Loader {
 		coverage.setMemoryClassLoader(memoryClassLoader);
 	}
 	
+	/**
+	 * Service to visit the bin folder
+	 * to find packages and classes 
+	 *            
+	 */
 	public void findPackages(String directoryName) {
 		Sut sut = new Sut();
 		File directory = new File(directoryName);
@@ -125,28 +154,33 @@ public class Loader {
     	return fileTemp;
 	}
 	
+	/** Builds the class name*/
 	public String createClassName(String fileTemp) {
     	String[] classTemp = fileTemp.split("\\.");
     	String className =	classTemp[classTemp.length-2];
     	return className;
 	}
 	
+	/**Builds the package name*/
 	public String createPackageName(String clazzName, String fileTemp) {
     	String packageName = fileTemp.substring(0, fileTemp.length() - clazzName.length()-7);
     	return packageName;
 	}
 	
+	/**Creates the {@link Package}*/
 	public Package createPackage(String packageName) {
 		Package pakage = new Package();
 		pakage.setFullName(packageName);
 		return pakage;
 	}
 	
+	/**Creates the {@link IClass}*/
 	public IClass createClass() {
 		CompositeClass clazz = new CompositeClass();
 		return clazz;
 	}
 	
+	/**Adds the class to the package it belongs to*/
 	public void addClassToPackage(Package pakage, String className) {
 		if(className.contains("$")) {
 			IClass clazz = new LeafNestedClass();
@@ -159,9 +193,9 @@ public class Loader {
 			clazz.setPackage(pakage);
 			pakage.addClass(clazz);
 		}
-		
 	}
 
+	/**Initializes the {@link MemoryClassLoader} with the binPath URL*/
 	public MemoryClassLoader initializeURLClassLoader() throws Exception {
 		File file = new File(binPath);
 		URL url = file.toURI().toURL();

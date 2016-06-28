@@ -15,15 +15,16 @@ import junit.framework.Test;
 
 
 /**
- * Class that implements pattern strategy
+ * Class that implements the strategy pattern
  * extends {@link AbstractStrategyJunit}
- * used when the TestSuite to analyze uses Junit3
+ * used when the {@link TestSuite} to analyze, uses Junit3
  *
  * 
  * @author TeamCoverage
  */
 public class StrategyJunit3 extends AbstractStrategyJunit{
 
+	
 	@Override
 	public TestSuite executeCoverage() throws Exception {
 		junit.framework.TestSuite allTestsSuite = null;
@@ -39,7 +40,7 @@ public class StrategyJunit3 extends AbstractStrategyJunit{
 		for(int i = 0; i < listOfTestsClasses.size(); i++) {
 			junit.framework.TestSuite testClass = (junit.framework.TestSuite) listOfTestsClasses.get(i);
 			for(int cm = 0; cm < testClass.countTestCases(); cm++) {
-				Class<?> testClassToCoverage = getJacocoServices().createInstrument(getClassName(), testClass.getName());	
+				Class<?> testClassToCoverage = getJacocoServices().createInstrument(super.getClazz().getFullName(), testClass.getName());	
 				if(!(testClass.testAt(cm).toString().contains("jacoco"))) {
 					String[] tmp = testClass.testAt(cm).toString().split("\\(");
 					String nameTestMethod = testClass.getName() + "." + tmp[0];	
@@ -48,7 +49,7 @@ public class StrategyJunit3 extends AbstractStrategyJunit{
 					Request request = Request.method(testClassToCoverage, tmp[0]);
 					new JUnitCore().run(request);
 						
-					CoverageBuilder coverageBuilder = getJacocoServices().collectAnalysis(getClassName());
+					CoverageBuilder coverageBuilder = getJacocoServices().collectAnalysis(super.getClazz().getFullName());
 					analyzeResult(coverageBuilder, getClazz(), testCase);	
 				}
 				getJacocoServices().runtimeShutdown();	

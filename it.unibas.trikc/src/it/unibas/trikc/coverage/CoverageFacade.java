@@ -4,7 +4,7 @@ import it.unibas.trikc.repository.reduction.DAOXmlTestSuite;
 import it.unibas.trikc.repository.reduction.IDAOTestSuite;
 
 /**
- * Instance of the pattern facade.
+ * Instance of the facade pattern.
  * It exposes a simple interface to access complex subsystems
  * 
  * 
@@ -17,11 +17,11 @@ public class CoverageFacade {
 	private ICoverage coverage;
 	
 	/**
-	 * It performs all the necessary operations to execute the coverage of SUT
+	 * It performs all the necessary operations to execute the SUT coverage
 	 * 
-	 * @param binPath:
-	 *            absolute path to the bin folder of the SUT
-	 * @param testSuite:
+	 * @param binPath
+	 *            absolute bin folder path of the SUT
+	 * @param testSuite
 	 *            fully-qualified name of the TestSuite to be analyzed
 	 *            
 	 * @throws java.lang.Exception

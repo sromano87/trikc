@@ -8,10 +8,9 @@ import java.util.Map;
 
 /**
  *	Customized URLClassLoader extending URLClassLoader.
- *	It used to load all classes of the SUT.
+ *	It is used to load all the SUT classes.
  * 
  * @author  TeamCoverage
- * @version 1.0
  * @see java.net.URLClassLoader
  */
 
@@ -24,11 +23,11 @@ public class MemoryClassLoader extends URLClassLoader {
 	private final Map<String, byte[]> definitions = new HashMap<String, byte[]>();
 
 	/**
-	 * Add a in-memory representation of a class.
+	 * Adds a in-memory representation of a class.
 	 * 
-	 * @param name:
+	 * @param name
 	 *            name of the class
-	 * @param bytes:
+	 * @param bytes
 	 *            class definition
 	 */
 	public void addDefinition(final String name, final byte[] bytes) {
