@@ -3,8 +3,13 @@ package it.unibas.trikc.modelEntity.compositeClass;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.simpleframework.xml.ElementList;
+import org.simpleframework.xml.Root;
+
+@Root
 public class CompositeClass extends AbstractClass {
 	
+	@ElementList
 	private List<IClass> classes = new ArrayList<>(); 
 	
 	public List<IClass> getChildren () {

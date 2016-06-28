@@ -1,0 +1,27 @@
+<dissimilarityMatrix>
+   <headers class="java.util.ArrayList">
+      <testCase>
+         <name>testCase1</name>
+         <coveredLines class="java.util.ArrayList"/>
+      </testCase>
+      <testCase>
+         <name>testCase2</name>
+         <coveredLines class="java.util.ArrayList"/>
+      </testCase>
+      <testCase>
+         <name>testCase3</name>
+         <coveredLines class="java.util.ArrayList"/>
+      </testCase>
+      <testCase>
+         <name>testCase4</name>
+         <coveredLines class="java.util.ArrayList"/>
+      </testCase>
+   </headers>
+   <matrix length="4">
+      <double length="4">0.0, 0.1, 0.2, 0.30000000000000004</double>
+      <double length="4">0.1, 0.0, 0.4, 0.6000000000000001</double>
+      <double length="4">0.2, 0.4, 0.0, 0.9000000000000001</double>
+      <double length="4">0.30000000000000004, 0.6000000000000001, 0.9000000000000001, 0.0</double>
+   </matrix>
+   <size>4</size>
+</dissimilarityMatrix>

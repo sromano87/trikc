@@ -3,13 +3,22 @@ package it.unibas.trikc.modelEntity.compositeClass;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.simpleframework.xml.Element;
+import org.simpleframework.xml.ElementList;
+import org.simpleframework.xml.Root;
+
+import it.unibas.trikc.modelEntity.Package;
 import it.unibas.trikc.modelEntity.method.IMethod;
 
+@Root
+public class AbstractClass implements IClass {
 
-public class AbstractClass {
-
-	private String name; 
+	@Element
+	private String name;
+	
 	private List<IMethod> methods = new ArrayList<>(); 
+	
+	@Element
 	private Package myPackage;
 	
 	public String getFullName () {
@@ -36,7 +45,7 @@ public class AbstractClass {
 		this.methods = methods;
 	}
 
-	public void setMyPackage(Package myPackage) {
+	public void setPackage(Package myPackage) {
 		this.myPackage = myPackage;
 	}
 	

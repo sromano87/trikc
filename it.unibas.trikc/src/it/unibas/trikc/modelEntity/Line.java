@@ -3,6 +3,8 @@ package it.unibas.trikc.modelEntity;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Root;
 
+import it.unibas.trikc.modelEntity.method.MyMethod;
+
 @Root
 public class Line {
 	
@@ -11,6 +13,9 @@ public class Line {
 	
 	@Element
 	private String id;
+	
+	@Element
+	private MyMethod myMethod; 
 	
 	public Line () {
 	}
@@ -34,6 +39,14 @@ public class Line {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public MyMethod getMyMethod() {
+		return myMethod;
+	}
+
+	public void setMyMethod(MyMethod myMethod) {
+		this.myMethod = myMethod;
 	} 
 	
 }
