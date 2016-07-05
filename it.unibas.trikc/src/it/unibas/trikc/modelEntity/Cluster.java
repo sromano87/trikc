@@ -24,4 +24,8 @@ public class Cluster {
 		this.testCases = testCases;
 	} 
 	
+	public void addTestCase(TestCase testCase){
+		this.testCases.add(testCase);
+	}
+	
 }

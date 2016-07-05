@@ -8,5 +8,7 @@
 	<classpathentry kind="lib" path="lib/simple-xml-2.7.1.jar"/>
 	<classpathentry kind="lib" path="lib/asm-all-5.0.3.jar"/>
 	<classpathentry kind="lib" path="lib/org.jacoco.core-0.7.7.201606060606.jar"/>
+	<classpathentry kind="lib" path="lib/mallet-deps.jar"/>
+	<classpathentry kind="lib" path="lib/mallet.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

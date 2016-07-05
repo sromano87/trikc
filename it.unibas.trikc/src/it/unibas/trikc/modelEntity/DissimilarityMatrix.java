@@ -63,5 +63,18 @@ public class DissimilarityMatrix {
 	public void addHeader (TestCase testCase) {
 		this.headers.add(testCase); 
 	}
+
+	public List<TestCase> getHeaders() {
+		return headers;
+	}
+	
+	public TestCase getHeaderByName(String name){
+		for(TestCase testCase: this.getHeaders()){
+			if(testCase.getFullName().equals(name)){
+				return testCase;
+			}
+		}
+		return null;
+	}
 	
 }

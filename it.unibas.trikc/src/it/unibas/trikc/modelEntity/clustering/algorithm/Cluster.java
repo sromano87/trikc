@@ -4,6 +4,8 @@ package it.unibas.trikc.modelEntity.clustering.algorithm;
 import java.util.ArrayList;
 import java.util.List;
 
+import it.unibas.trikc.modelEntity.clustering.visitor.IVisitor;
+
 public class Cluster {
 
     private String name;
@@ -139,6 +141,10 @@ public class Cluster {
         }
         return dist;
 
+    }
+    
+    public void accept(IVisitor visitor){
+    	visitor.visit(this);
     }
 
 }

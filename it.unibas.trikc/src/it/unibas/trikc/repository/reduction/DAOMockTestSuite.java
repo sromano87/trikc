@@ -5,7 +5,6 @@ import it.unibas.trikc.modelEntity.Package;
 import it.unibas.trikc.modelEntity.Sut;
 import it.unibas.trikc.modelEntity.TestSuite;
 import it.unibas.trikc.modelEntity.compositeClass.CompositeClass;
-import it.unibas.trikc.modelEntity.compositeClass.LeafNestedClass;
 import it.unibas.trikc.modelEntity.method.MyMethod;
 import it.unibas.trikc.modelEntity.method.TestCase;
 

@@ -25,4 +25,23 @@ public class Clusters {
 		clusters.put(key, cluster); 
 	}
 	
+	public void addTestCaseTo( String key, TestCase testCase){
+		Cluster cluster = clusters.get(key);
+		if(cluster == null){
+			cluster = new Cluster();
+			clusters.put(key, cluster);
+		}
+		cluster.addTestCase(testCase);
+	}
+
+	public Map<String, Cluster> getClusters() {
+		return clusters;
+	}
+
+	public void setClusters(Map<String, Cluster> clusters) {
+		this.clusters = clusters;
+	}
+	
+	
+	
 }
