@@ -14,8 +14,8 @@ import it.unibas.trikc.modelEntity.compositeClass.LeafNestedClass;
 
 
 /**
- * Instance of the singleton pattern.
- * It allows to explore the structure of the SUT
+ * Instance of the pattern singleton.
+ * It is to explore the structure of the SUT
  * It is also responsible for initializing the {@link MemoryClassLoader}
  * 
  * @author TeamCoverage
@@ -39,7 +39,7 @@ public class Loader {
 	
 	/**
 	 * @return binPath 
-	 * 				string representing the full bin folder path 
+	 * 				string representing the full path of the bin folder
 	 * */		
 	public String getBinPath() {
 		return binPath;
@@ -47,7 +47,7 @@ public class Loader {
 	
 	/**
 	 * @param binPath
-	 * 				string representing the full bin folder path
+	 * 				string representing the full path of the bin folder
 	 * */
 	public void setBinPath(String binPath) {
 		this.binPath = binPath;
@@ -71,7 +71,7 @@ public class Loader {
 	
 	/**
 	 * @return classesPackages 
-	 * 						map containing the source classes packages
+	 * 						map containing the packages of source classes
 	 * */
 	public Map<String, Package> getMapClassesPackages() {
 		return this.mapClassesPackages;
@@ -161,7 +161,7 @@ public class Loader {
     	return className;
 	}
 	
-	/**Builds the package name*/
+	/** Builds the package name*/
 	public String createPackageName(String clazzName, String fileTemp) {
     	String packageName = fileTemp.substring(0, fileTemp.length() - clazzName.length()-7);
     	return packageName;
@@ -180,22 +180,44 @@ public class Loader {
 		return clazz;
 	}
 	
-	/**Adds the class to the package it belongs to*/
+	/**Add the class to the package to which it belongs*/
 	public void addClassToPackage(Package pakage, String className) {
 		if(className.contains("$")) {
-			IClass clazz = new LeafNestedClass();
+			
+			LeafNestedClass clazz = new LeafNestedClass();
 			clazz.setFullName(pakage.getFullName()+"." + className);
 			clazz.setPackage(pakage);
 			pakage.addClass(clazz);
+			IClass clazzParent = new CompositeClass();
+			String[] lineData = className.split("\\$");
+			clazzParent.setFullName(pakage.getFullName()+"." + lineData[0]);
+			clazzParent.setPackage(pakage);
+			boolean isClassAlreadyInPackage = checkClassInPackage(clazzParent,pakage);
+			if(isClassAlreadyInPackage == false){
+				pakage.addClass(clazzParent);
+			}
+			clazz.setParent(clazzParent);
 		} else {
 			IClass clazz = new CompositeClass();
 			clazz.setFullName(pakage.getFullName()+"." + className);
 			clazz.setPackage(pakage);
-			pakage.addClass(clazz);
+			boolean isClassAlreadyInPackage = checkClassInPackage(clazz,pakage);
+			if(isClassAlreadyInPackage == false){
+				pakage.addClass(clazz);
+			}
 		}
 	}
+	
+	public boolean checkClassInPackage(IClass c, Package pakage){
+		for(IClass clazz : pakage.getClasses()){
+			if(clazz.getFullName().equals(c.getFullName())){
+				return true;
+			}
+		}
+		return false;
+	}
 
-	/**Initializes the {@link MemoryClassLoader} with the binPath URL*/
+	/**Initializes the {@link MemoryClassLoader} whit the URL of the binPath*/
 	public MemoryClassLoader initializeURLClassLoader() throws Exception {
 		File file = new File(binPath);
 		URL url = file.toURI().toURL();
