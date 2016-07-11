@@ -35,12 +35,21 @@ public class CoverageFacade {
 		loader.setTestSuiteName(testSuite);
 		loader.load(coverage);
 		
-		this.coverage.executeCoverage();
 		this.coverage = coverage;
+		this.coverage.executeCoverage();
 
 		IDAOTestSuite dao = new DAOXmlTestSuite();
 		dao.save(coverage.getTestSuite(), "testSuiteCoverage_" + testSuite);
+		System.out.println(coverage.getTestSuite().toString());
 
+	}
+
+	public ICoverage getCoverage() {
+		return coverage;
+	}
+
+	public void setCoverage(ICoverage coverage) {
+		this.coverage = coverage;
 	}
 	
 }

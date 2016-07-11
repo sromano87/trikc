@@ -42,4 +42,18 @@ public class TestSuite {
 		this.testCases.add(testCase);
 	}
 	
+	@Override 
+	public String toString() {
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append("TestSuite: \n");
+		stringBuilder.append(name);
+		stringBuilder.append("\n");
+		stringBuilder.append("List TestCase: \n");
+		
+		for(TestCase testCase : testCases) {
+			stringBuilder.append("\t");
+			stringBuilder.append(testCase.toString());
+		}
+		return stringBuilder.toString();
+	}
 }

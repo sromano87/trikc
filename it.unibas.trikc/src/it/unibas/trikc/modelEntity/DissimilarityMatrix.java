@@ -30,6 +30,7 @@ public class DissimilarityMatrix {
 	
 	public DissimilarityMatrix(int size) {
 		matrix = new double[size][size];
+		this.size = size;
 	}
 	
 	public Double getValueAt (int i, int j) {

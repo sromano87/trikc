@@ -5,7 +5,9 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.handlers.HandlerUtil;
-import org.eclipse.jface.dialogs.MessageDialog;
+
+import it.unibas.trikc.views.MainWindow;
+
 
 /**
  * Our sample handler extends AbstractHandler, an IHandler base class.
@@ -13,6 +15,7 @@ import org.eclipse.jface.dialogs.MessageDialog;
  * @see org.eclipse.core.commands.AbstractHandler
  */
 public class SampleHandler extends AbstractHandler {
+	public static MainWindow trikc;
 	/**
 	 * The constructor.
 	 */
@@ -24,11 +27,10 @@ public class SampleHandler extends AbstractHandler {
 	 * from the application context.
 	 */
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindowChecked(event);
-		MessageDialog.openInformation(
-				window.getShell(),
-				"Trikc",
-				"This is an example");
-		return null;
+		//IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindowChecked(event);
+		trikc = new MainWindow(null);
+		//trikc.setBlockOnOpen(true);
+		trikc.open();
+	    return null;
 	}
 }

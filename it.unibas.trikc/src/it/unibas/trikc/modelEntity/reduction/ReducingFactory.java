@@ -17,7 +17,7 @@ public class ReducingFactory {
 	
 	public IStrategyReduction getReduction (String type){
 		if(type.trim().equals(Constants.MOST_COVERING_REDUCTION)){
-			strategy = new MostCoveringReduction();
+			strategy = new StrategyMostCoveringReduction();
 		}
 		return strategy; 
 		

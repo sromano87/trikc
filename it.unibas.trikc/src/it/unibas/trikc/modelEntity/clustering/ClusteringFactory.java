@@ -17,7 +17,7 @@ public class ClusteringFactory {
 
 	public IStrategyClustering getClustering(String type){
 		if(type.trim().equals(Constants.HIERARCHICAL_CLUSTERING)){
-			strategy = new HierarchicalClustering();
+			strategy = new StrategyHierarchicalClustering();
 		}
 		
 		return strategy; 

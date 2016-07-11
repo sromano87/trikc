@@ -5,16 +5,17 @@ import java.util.List;
 
 import it.unibas.trikc.modelEntity.Clusters;
 import it.unibas.trikc.modelEntity.method.TestCase;
+import it.unibas.trikc.repository.XMLException;
 
 public class DAOMockClusters implements IDAOClusters {
 
 	@Override
-	public void save(Clusters clusters, String nameFile) {
+	public void save(Clusters clusters, String nameFile) throws XMLException{
 		
 	}
 
 	@Override
-	public Clusters load(String nameFile) {
+	public Clusters load(String nameFile) throws XMLException{
 		Clusters clusters = new Clusters(); 
 		
 		TestCase testCase1 = new TestCase();

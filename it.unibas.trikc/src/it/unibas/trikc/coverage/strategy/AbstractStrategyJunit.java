@@ -135,7 +135,7 @@ public abstract class AbstractStrategyJunit implements IStrategyJunit{
 				}
 				String methodFullName = clazz.getFullName() + "." + methodName + methodBytecode;
 				for (int l = m.getFirstLine(); l <= m.getLastLine(); l++) {
-					if(cc.getLine(l).getStatus() == ICounter.FULLY_COVERED || cc.getLine(l).getStatus() == ICounter.PARTLY_COVERED) {
+					if(cc.getLine(l).getStatus() == ICounter.FULLY_COVERED) {
 						Line line = createLine(l, methodFullName);
 						testCase.addCoveredLine(line);
 						methodFound.addLine(line);

@@ -17,7 +17,7 @@ public class DissimilarityFactory {
 	
 	public IStrategyDissimilarity getDissimilarity(String type){
 		if(type.trim().equals(Constants.STRING_KERNEL_DISSIMILARITY)){
-			strategy = new StringKernelDissimilarity();
+			strategy = new StrategyStringKernelDissimilarity();
 		}
 		return strategy;
 	}

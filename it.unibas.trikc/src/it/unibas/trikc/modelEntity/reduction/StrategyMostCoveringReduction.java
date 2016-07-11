@@ -9,7 +9,7 @@ import it.unibas.trikc.modelEntity.Clusters;
 import it.unibas.trikc.modelEntity.TestSuite;
 import it.unibas.trikc.modelEntity.method.TestCase;
 
-public class MostCoveringReduction implements IStrategyReduction{
+public class StrategyMostCoveringReduction implements IStrategyReduction{
 
 	@Override
 	public TestSuite reduceTestSuite(Clusters clusters) {
@@ -30,6 +30,7 @@ public class MostCoveringReduction implements IStrategyReduction{
 		int lineCovered = 0;
 		for (int i = 0; i < cluster.getTestCases().size(); i++) {
 			if(cluster.getTestCases().get(i).getCoveredLines().size() == lineCovered){
+				listOfTestCaseMostCovering.clear();
 				listOfTestCaseMostCovering.add(cluster.getTestCases().get(i));
 				lineCovered = cluster.getTestCases().get(i).getCoveredLines().size();
 			}

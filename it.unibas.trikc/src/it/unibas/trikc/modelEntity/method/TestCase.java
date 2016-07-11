@@ -30,4 +30,11 @@ public class TestCase extends AbstractMethod {
 		this.coveredLines.add(line); 
 	}
 
+	@Override
+	public String toString() {
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append(super.getFullName());
+		stringBuilder.append("\n");
+		return stringBuilder.toString();
+	}
 }

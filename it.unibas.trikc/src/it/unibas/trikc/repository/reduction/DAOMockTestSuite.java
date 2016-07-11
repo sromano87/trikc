@@ -5,18 +5,20 @@ import it.unibas.trikc.modelEntity.Package;
 import it.unibas.trikc.modelEntity.Sut;
 import it.unibas.trikc.modelEntity.TestSuite;
 import it.unibas.trikc.modelEntity.compositeClass.CompositeClass;
+import it.unibas.trikc.modelEntity.compositeClass.LeafNestedClass;
 import it.unibas.trikc.modelEntity.method.MyMethod;
 import it.unibas.trikc.modelEntity.method.TestCase;
+import it.unibas.trikc.repository.XMLException;
 
 public class DAOMockTestSuite implements IDAOTestSuite {
 
 	@Override
-	public void save(TestSuite testSuite, String nameFile) {
+	public void save(TestSuite testSuite, String nameFile) throws XMLException{
 			
 	}
 
 	@Override
-	public TestSuite load(String nameFile) {
+	public TestSuite load(String nameFile) throws XMLException{
 		TestSuite testSuite = new TestSuite();
 		testSuite.setFullName("TestSuite1");
 		

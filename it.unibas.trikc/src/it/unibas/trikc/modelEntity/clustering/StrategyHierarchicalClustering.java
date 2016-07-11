@@ -8,7 +8,7 @@ import it.unibas.trikc.modelEntity.clustering.algorithm.DefaultClusteringAlgorit
 import it.unibas.trikc.modelEntity.clustering.visitor.IVisitor;
 import it.unibas.trikc.modelEntity.clustering.visitor.VisitorCluster;
 
-public class HierarchicalClustering implements IStrategyClustering {
+public class StrategyHierarchicalClustering implements IStrategyClustering {
 	
 	@Override
 	public Clusters clusterTestCases(DissimilarityMatrix matrix) {
