@@ -6,6 +6,10 @@ public class Constants {
 	public static final String HIERARCHICAL_CLUSTERING = "HierarchicalClustering"; 
 	public static final String MOST_COVERING_REDUCTION = "MostCoveringReduction";
 	
+	public static final String AVERAGE_LINKAGE_STRATEGY = "AVERAGE LINKAGE"; 
+	public static final String COMPLETE_LINKAGE_STRATEGY = "COMPLETE LINKAGE"; 
+	public static final String SINGLE_LINKAGE_STRATEGY = "SINGLE LINKAGE";
+	
 	public final static String DIRECTORY_BIN ="directory bin";
 	public final static String TEST_SUITE="test suite";
 	

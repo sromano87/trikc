@@ -5,6 +5,6 @@ import it.unibas.trikc.modelEntity.DissimilarityMatrix;
 
 public interface IStrategyClustering {
 	
-	public Clusters clusterTestCases(DissimilarityMatrix matrix);
+	public Clusters clusterTestCases(DissimilarityMatrix matrix, double level, String linkageStrategy);
 
 }

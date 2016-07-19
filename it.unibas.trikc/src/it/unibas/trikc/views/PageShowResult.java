@@ -28,10 +28,10 @@ public class PageShowResult extends Composite {
 
 		Label labelResult = new Label(this, SWT.NONE);
 		labelResult.setBounds(49, 23, 230, 15);
-		labelResult.setText("Result Reducing Test Suite");
+		labelResult.setText("Not Reducing Test Suite");
 
 		Label labelOldTestSuite = new Label(this, SWT.NONE);
-		labelOldTestSuite.setText("Not Reducing Test Suite");
+		labelOldTestSuite.setText("Result Reducing Test Suite");
 		labelOldTestSuite.setBounds(462, 23, 182, 15);
 
 		textResult = new Text(this, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
@@ -46,8 +46,8 @@ public class PageShowResult extends Composite {
 		TestSuite tsOld = (TestSuite) Modello.getInstance().getBean(Constants.TEST_SUITE_OBJ);
 		TestSuite tsResult = (TestSuite) Modello.getInstance().getBean(Constants.REDUCING_TEST_SUITE);
 		if (tsOld != null && tsResult != null) {
-			textOld.setText(tsOld.toString());
-			textResult.setText(tsResult.toString());
+			textResult.setText(tsOld.toString());
+			textOld.setText(tsResult.toString());
 		}
 
 	}

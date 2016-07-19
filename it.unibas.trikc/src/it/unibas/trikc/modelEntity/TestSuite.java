@@ -48,7 +48,7 @@ public class TestSuite {
 		stringBuilder.append("TestSuite: \n");
 		stringBuilder.append(name);
 		stringBuilder.append("\n");
-		stringBuilder.append("List TestCase: \n");
+		stringBuilder.append("List TestCase: " + testCases.size() + "\n");
 		
 		for(TestCase testCase : testCases) {
 			stringBuilder.append("\t");

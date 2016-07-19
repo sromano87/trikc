@@ -32,10 +32,11 @@ import org.eclipse.swt.events.SelectionEvent;
 
 public class PageCoverage extends Composite {
 	private static Logger logger = Logger.getLogger(PageCoverage.class.getName());
-	private Label labelCoverage;
-	private Combo comboCoverage;
-	private Button btnCoverage, buttonLoad;
-	private TestSuite testSuite;
+	public static Combo comboCoverage;
+	private Button btnCoverage;
+	private static Button buttonLoad;
+	private TestSuite testSuite = null;
+	private static List<File> listaFile  = null;
 
 	/**
 	 * Create the composite.
@@ -48,14 +49,11 @@ public class PageCoverage extends Composite {
 		super(parent, style);
 
 		comboCoverage = new Combo(this, SWT.NONE);
-		comboCoverage.setBounds(29, 42, 203, 22);
-
-		labelCoverage = new Label(this, SWT.NONE);
-		labelCoverage.setBounds(293, 46, 164, 14);
+		comboCoverage.setBounds(32, 100, 316, 23);
 
 		btnCoverage = new Button(this, SWT.NONE);
-		btnCoverage.setBounds(29, 94, 101, 28);
-		btnCoverage.setText("GettingCoverage");
+		btnCoverage.setBounds(430, 39, 101, 28);
+		btnCoverage.setText("New Coverage");
 
 		btnCoverage.addListener(SWT.Selection, new Listener() {
 			
@@ -73,6 +71,7 @@ public class PageCoverage extends Composite {
 						DirectoryCoverage dc = (DirectoryCoverage) Modello.getInstance().getBean(Constants.DIRECTORY_COVERAGE);
 						dc.setPageComplete(true);
 					}
+					PageDissimilarity.existingDissimilarity();
 				} catch (Exception e) {
 					IStatus status = new Status(IStatus.ERROR, "pageCoverage", "error coveraging " + e.getMessage());
 					ErrorDialog.openError(shell, "Error", "Coverage Error", status);
@@ -81,56 +80,33 @@ public class PageCoverage extends Composite {
 			}
 		});
 		buttonLoad = new Button(this, SWT.NONE);
-		buttonLoad.setBounds(155, 94, 70, 28);
+		buttonLoad.setBounds(430, 96, 101, 28);
 		buttonLoad.setText("Load");
-
-		if (comboCoverage.isEnabled() == true) {
-			btnCoverage.setEnabled(true);
-			buttonLoad.setEnabled(false);
-		}
-		List<File> listaFile = existingCoverage();
-		if (listaFile.size() > 0) {
-			comboCoverage.setEnabled(true);
-			btnCoverage.setEnabled(false);
-			buttonLoad.setEnabled(true);
-			labelCoverage.setText("existing coverage");
-			for (File file : listaFile) {
-				comboCoverage.add(file.getName().substring(0, file.getName().length() - 4));
-			}
-
-			comboCoverage.addSelectionListener(new SelectionAdapter() {
-				public void widgetSelected(SelectionEvent e) {
-					int index = comboCoverage.getSelectionIndex();
-					if (comboCoverage.getItem(index).equals("New Coverage")) {
-						btnCoverage.setEnabled(true);
-						buttonLoad.setEnabled(false);
-					} else {
-						btnCoverage.setEnabled(false);
-						buttonLoad.setEnabled(true);
-					}
-				}
-			});
-		} else {
-			btnCoverage.setEnabled(true);
-		}
-		comboCoverage.add("New Coverage");
-		comboCoverage.select(0);
+		comboCoverage.setEnabled(false);
+		buttonLoad.setEnabled(false);
+		//listaFile = existingCoverage();
+		
+		
+		
+		Label labelNewCoverage = new Label(this, SWT.NONE);
+		labelNewCoverage.setBounds(32, 46, 209, 15);
+		labelNewCoverage.setText("Push this Button to run a new Coverage");
 		buttonLoad.addListener(SWT.Selection, new Listener() {
 			
 			@Override
 			public void handleEvent(Event event) {
 				Shell shell = getShell();
-				TestSuite ts= null;
 				try {
 					IDAOTestSuite dao = new DAOXmlTestSuite();
-					ts = dao.load(comboCoverage.getItem(comboCoverage.getSelectionIndex()));
+					testSuite = dao.load(comboCoverage.getItem(comboCoverage.getSelectionIndex()));
 					
-					if(ts!=null){
-						Modello.getInstance().putBean(Constants.TEST_SUITE_OBJ, ts);
+					if(testSuite!=null){
+						Modello.getInstance().putBean(Constants.TEST_SUITE_OBJ, testSuite);
 						MessageDialog.openInformation(shell, "Information", "Load Done");
 						DirectoryCoverage dc = (DirectoryCoverage) Modello.getInstance().getBean(Constants.DIRECTORY_COVERAGE);
 						dc.setPageComplete(true);
 					}
+					PageDissimilarity.existingDissimilarity();
 				} catch (Exception e) {
 					IStatus status = new Status(IStatus.ERROR, "pageCoverage", "error coveraging " + e.getMessage());
 					ErrorDialog.openError(shell, "Error", "Coverage Error", status);
@@ -146,22 +122,52 @@ public class PageCoverage extends Composite {
 		// Disable the check that prevents subclassing of SWT components
 	}
 
-	public List<File> existingCoverage() {
-		List<File> listaFileCoverage = new ArrayList<File>();
+	public static void existingCoverage() {
+		listaFile = new ArrayList<File>();
 		URL location = PageCoverage.class.getProtectionDomain().getCodeSource().getLocation();
 		StringBuilder path = new StringBuilder();
 		path.append(location.getPath());
 		path.append("storage");
 		File directoryStorage = new File(path.toString());
-		File[] listaFile = directoryStorage.listFiles();
-		if (listaFile != null) {
-			for (int i = 0; i < listaFile.length; i++) {
-				if (listaFile[i].getName().contains("testSuiteCoverage_")) {
-					listaFileCoverage.add(listaFile[i]);
+		File[] listaFiles = directoryStorage.listFiles();
+		
+		if (listaFiles != null) {
+			for (int i = 0; i < listaFiles.length; i++) {
+				System.out.print("--- " + listaFiles[i].getName() + "\n"); 
+				System.out.println("---> " + (String)Modello.getInstance().getBean(Constants.TEST_SUITE) + "\n");
+					if (listaFiles[i].getName().contains("testSuiteCoverage_"+(String)Modello.getInstance().getBean(Constants.TEST_SUITE)) 
+							/*&& !verifyExistence(listaFiles[i])*/) {
+					listaFile.add(listaFiles[i]);
+					}	
 				}
 			}
+		
+	
+		if (listaFile.size() > 0) {
+			comboCoverage.setEnabled(true);
+			buttonLoad.setEnabled(true);
+			for (File file : listaFile) {
+				comboCoverage.add(file.getName().substring(0, file.getName().length() - 4));
+			}
+			comboCoverage.select(0);
 		}
-		return listaFileCoverage;
+		//return listaFileCoverage;
+	}
+	
+	public static boolean verifyExistence(File file) {
+		String[] comboItems = comboCoverage.getItems();
+		logger.info("dimensione combo "+comboItems.length);
+		int count =0;
+		for(int j=0; j<comboItems.length; j++) {
+			logger.info("fileName "+file.getName()+" comboItem "+comboItems[j]+ "equals? "+file.getName().equals(comboItems[j]));
+			if (file.getName().substring(0, file.getName().length()-4).equals(comboItems[j])) {
+				count++;
+			}
+		}
+		if(count==0) {
+			return false;
+		}
+		return true;
 	}
 
 	public Button getButtonCoverage() {
@@ -171,5 +177,4 @@ public class PageCoverage extends Composite {
 	public TestSuite getTestSuite() {
 		return this.testSuite;
 	}
-
 }

@@ -143,8 +143,8 @@ public class Cluster {
 
     }
     
-    public void accept(IVisitor visitor){
-    	visitor.visit(this);
+    public void accept(IVisitor visitor, double level){
+    	visitor.visit(this, level);
     }
 
 }

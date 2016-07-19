@@ -12,15 +12,18 @@ import it.unibas.trikc.Constants;
 import it.unibas.trikc.Modello;
 
 import java.util.StringTokenizer;
+import java.util.logging.Logger;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 
 public class PageSetUp extends Composite {
-	//private static Logger logger = Logger.getLogger(PageSetUp.class.getName());
+	private static Logger logger = Logger.getLogger(PageSetUp.class.getName());
 
 	private Label labelDirectory, labelTestSuite;
 	private Button buttonDirectory, buttonTestSuite;
@@ -46,7 +49,7 @@ public class PageSetUp extends Composite {
 		labelDirectory = new Label(this, SWT.NONE);
 		labelDirectory.setEnabled(false);
 		labelDirectory.setText("Select the bin folder");
-		labelDirectory.setBounds(10, 28, 275, 15);
+		labelDirectory.setBounds(10, 28, 346, 15);
 
 		buttonDirectory = new Button(this, SWT.PUSH);
 		buttonDirectory.addListener(SWT.Selection, new Listener() {
@@ -77,15 +80,20 @@ public class PageSetUp extends Composite {
 			}
 		});
 
-		buttonDirectory.setBounds(345, 23, 75, 25);
+		buttonDirectory.setBounds(416, 23, 75, 25);
 		buttonDirectory.setText("Browse...");
 
 		labelTestSuite = new Label(this, SWT.WRAP);
 		labelTestSuite.setEnabled(false);
-		labelTestSuite.setBounds(10, 87, 275, 15);
+		labelTestSuite.setBounds(10, 87, 346, 15);
 		labelTestSuite.setText("Select TestSuite");
 
 		buttonTestSuite = new Button(this, SWT.PUSH);
+		buttonTestSuite.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+			}
+		});
 		buttonTestSuite.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
 				Shell s = getShell();
@@ -112,6 +120,7 @@ public class PageSetUp extends Composite {
 					String stringaTestSuite = testSuite.toLowerCase();
 					if (testSuite != null && stringaTestSuite.contains("testsuite")) {
 						Modello.getInstance().putBean(Constants.TEST_SUITE, testSuite);
+						PageCoverage.existingCoverage();
 					} else {
 						Shell s1 = getShell();
 						IStatus status = new Status(IStatus.ERROR, "pageSetUp",
@@ -126,7 +135,7 @@ public class PageSetUp extends Composite {
 				}
 			}
 		});
-		buttonTestSuite.setBounds(345, 82, 75, 25);
+		buttonTestSuite.setBounds(416, 82, 75, 25);
 		buttonTestSuite.setText("Browse...");
 	}
 

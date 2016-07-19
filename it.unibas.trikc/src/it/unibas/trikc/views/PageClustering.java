@@ -31,14 +31,20 @@ import it.unibas.trikc.modelEntity.clustering.StrategyHierarchicalClustering;
 import it.unibas.trikc.repository.XMLException;
 import it.unibas.trikc.repository.clusters.DAOXmlClusters;
 import it.unibas.trikc.repository.clusters.IDAOClusters;
+import org.eclipse.swt.widgets.Slider;
 
 public class PageClustering extends Composite {
 	private static Logger logger = Logger.getLogger(PageClustering.class.getName());
-	private Button buttonClustering, buttonLoad;
-	private Label labelClustering;
-	private Combo comboClustering, comboStrategy;
+	private Button buttonClustering;
+	private static Button buttonLoad;
+	private static Combo comboClustering;
+	private Combo comboStrategy;
 	private IStrategyClustering strategy;
-
+	private Label lblNewLabel;
+	private Label lblNewLabel_1;
+	private static List<File> listaFile = null;
+	private double sliderValue;
+	private String linkageLevel;
 	/**
 	 * Create the composite.
 	 * 
@@ -49,63 +55,85 @@ public class PageClustering extends Composite {
 		super(parent, style);
 
 		buttonClustering = new Button(this, SWT.NONE);
-		buttonClustering.setBounds(29, 150, 109, 28);
-		buttonClustering.setText("GettingClustering");
-
-		labelClustering = new Label(this, SWT.NONE);
-		labelClustering.setBounds(265, 45, 175, 14);
+		buttonClustering.setBounds(393, 206, 109, 28);
+		buttonClustering.setText("New Clustering");
 
 		comboClustering = new Combo(this, SWT.NONE);
-		comboClustering.setBounds(29, 42, 203, 22);
+		comboClustering.setBounds(29, 279, 301, 23);
 
 		comboStrategy = new Combo(this, SWT.NONE);
-		comboStrategy.setBounds(29, 98, 203, 23);
+		comboStrategy.setBounds(29, 68, 301, 23);
 
 		buttonLoad = new Button(this, SWT.NONE);
-		buttonLoad.setBounds(155, 150, 70, 28);
+		buttonLoad.setBounds(393, 275, 109, 28);
 		buttonLoad.setText("Load");
 
-		List<File> listaFile = existingClustering();
+		//listaFile = existingClustering();
 
-		if (listaFile.size() > 0) {
-			for (File file : listaFile) {
-				comboClustering.add(file.getName());
-			}
-			labelClustering.setText("existing clustering");
-			comboStrategy.setEnabled(false);
-			comboClustering.setEnabled(true);
-			buttonClustering.setEnabled(false);
-		} else {
-			comboClustering.setEnabled(true);
-			buttonClustering.setEnabled(true);
-			buttonLoad.setEnabled(false);
-			comboStrategy.setEnabled(true);
-		}
-		comboClustering.add("New Cluster");
-		comboClustering.select(0);
-
-		if (comboClustering.getItem(comboClustering.getSelectionIndex()).equals("New Cluster")) {
-			comboStrategy.setEnabled(true);
-		}
+		
 
 		List<String> strategyList = strategySearch();
 		for (String strategy : strategyList) {
 			comboStrategy.add(strategy.substring(0, strategy.length() - 5));
 		}
 		comboStrategy.select(0);
+		
+		lblNewLabel = new Label(this, SWT.NONE);
+		lblNewLabel.setBounds(29, 47, 301, 15);
+		lblNewLabel.setText("Select the Strategy");
+		
+		lblNewLabel_1 = new Label(this, SWT.NONE);
+		lblNewLabel_1.setBounds(29, 115, 301, 15);
+		lblNewLabel_1.setText("Select the level");
+		
+		final Combo comboLevel = new Combo(this, SWT.NONE);
+		comboLevel.setBounds(29, 136, 301, 23);
+		comboLevel.add("SINGLE LINKAGE",0);
+		comboLevel.add("AVERAGE LINKAGE",1);
+		comboLevel.add("COMPLETE LINKAGE",2);
+		comboLevel.select(0);
+		linkageLevel = comboLevel.getItem(0);
+		comboLevel.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e) {
+				//comboDissimilarity.getItem(comboDissimilarity.getSelectionIndex())
+				linkageLevel = comboLevel.getItem(comboLevel.getSelectionIndex());
+			}
+		});
+		
+		Label lblNewLabel_3 = new Label(this, SWT.NONE);
+		lblNewLabel_3.setBounds(27, 258, 303, 15);
+		lblNewLabel_3.setText("Select an existing Clustering and load it");
+		
+		final Label labelSlider = new Label(this, SWT.NONE);
+		labelSlider.setBounds(301, 206, 29, 15);
+		
+		Label lblNewLabel_2 = new Label(this, SWT.NONE);
+		lblNewLabel_2.setBounds(29, 183, 301, 15);
+		lblNewLabel_2.setText("Select the threshold and run New Clustering");
+		
+		final Slider slider = new Slider(this, SWT.NONE);
+		slider.setBounds(29, 204, 266, 17);
+		slider.setMaximum(110);
+	    slider.setMinimum(0);
+	    slider.setSelection(50);
+	    slider.setIncrement(10);
+	    sliderValue = slider.getSelection();
+	    sliderValue = sliderValue/100;
+	    labelSlider.setText(""+Double.toString(sliderValue));
+	    
+	    slider.addListener(SWT.Selection, new Listener() {
+	        public void handleEvent(Event event) {
+	        	sliderValue = slider.getSelection();
+	        	sliderValue = sliderValue/100; 
+	        	labelSlider.setText("" + Double.toString(sliderValue));
+	        }
+	      });
+	   
+		
+		
 
 		comboClustering.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
-				int index = comboClustering.getSelectionIndex();
-				if (comboClustering.getItem(index).equals("New Cluster")) {
-					buttonClustering.setEnabled(true);
-					comboStrategy.setEnabled(true);
-					buttonLoad.setEnabled(false);
-				} else {
-					buttonClustering.setEnabled(false);
-					comboStrategy.setEnabled(false);
-					buttonLoad.setEnabled(true);
-				}
 			}
 		});
 
@@ -136,7 +164,7 @@ public class PageClustering extends Composite {
 					ErrorDialog.openError(shell, "Error", "Dissimilarity Error", status);
 				} else {
 					Clusters clusters = strategy.clusterTestCases(
-							(DissimilarityMatrix) Modello.getInstance().getBean(Constants.DISSIMILARITY_MATRIX));
+							(DissimilarityMatrix) Modello.getInstance().getBean(Constants.DISSIMILARITY_MATRIX), sliderValue, linkageLevel);
 					try {
 						IDAOClusters dao = new DAOXmlClusters();
 						dao.save(clusters, "Clustering_"
@@ -148,6 +176,7 @@ public class PageClustering extends Composite {
 						if (clusters != null) {
 							dc.setPageComplete(true);
 						}
+						PageReducing.existingReducing();
 					} catch (XMLException e) {
 						IStatus status = new Status(IStatus.ERROR, "pageCLustering",
 								"errore nel salvataggio dei cluster");
@@ -174,6 +203,7 @@ public class PageClustering extends Composite {
 								.getBean(Constants.DIRECTORY_CLUSTERING);
 						dc.setPageComplete(true);
 					}
+					PageReducing.existingReducing();
 				} catch (XMLException e) {
 					IStatus status = new Status(IStatus.ERROR, "pageCluster", "errore nel caricamento del cluster");
 					ErrorDialog.openError(shell, "Error", "Cluster Error", status);
@@ -184,22 +214,40 @@ public class PageClustering extends Composite {
 
 	}
 
-	public List<File> existingClustering() {
-		List<File> listaFileCoverage = new ArrayList<File>();
+	public static void existingClustering() {
+		listaFile = new ArrayList<File>();
 		URL location = PageClustering.class.getProtectionDomain().getCodeSource().getLocation();
 		StringBuilder path = new StringBuilder();
 		path.append(location.getPath());
 		path.append("storage");
 		File directoryStorage = new File(path.toString());
-		File[] listaFile = directoryStorage.listFiles();
-		if (listaFile != null) {
-			for (int i = 0; i < listaFile.length; i++) {
-				if (listaFile[i].getName().contains("Clustering_")) {
-					listaFileCoverage.add(listaFile[i]);
+		File[] listaFiles = directoryStorage.listFiles();
+		if (listaFiles != null) {
+			for (int i = 0; i < listaFiles.length; i++) {
+				if (listaFiles[i].getName().contains("Clustering_"+(String)Modello.getInstance().getBean(Constants.TEST_SUITE))
+						&& !verifyExistence(listaFiles[i])) {
+					listaFile.add(listaFiles[i]);
 				}
 			}
 		}
-		return listaFileCoverage;
+		if (listaFile.size() > 0) {
+			for (File file : listaFile) {
+				comboClustering.add(file.getName());
+			}
+			
+		} else {
+			comboClustering.setEnabled(false);
+			buttonLoad.setEnabled(false);
+		}
+		if(comboClustering.getItemCount()>0) {
+			comboClustering.select(0);
+			comboClustering.setEnabled(true);
+			buttonLoad.setEnabled(true);
+		} else {
+			comboClustering.setEnabled(false);
+			buttonLoad.setEnabled(false);
+		}
+		
 	}
 
 	public List<String> strategySearch() {
@@ -218,6 +266,22 @@ public class PageClustering extends Composite {
 			}
 		}
 		return risultato;
+	}
+	
+	public static boolean verifyExistence(File file) {
+		String[] comboItems = comboClustering.getItems();
+		//logger.info("dimensione combo "+comboItems.length);
+		int count =0;
+		for(int j=0; j<comboItems.length; j++) {
+			logger.info("fileName "+file.getName()+" comboItem "+comboItems[j]+ " equals? "+file.getName().equals(comboItems[j]));
+			if (file.getName().substring(0, file.getName().length()-4).equals(comboItems[j].substring(0, comboItems[j].length()-4))) {
+				count++;
+			}
+		}
+		if(count==0) {
+			return false;
+		}
+		return true;
 	}
 
 	@Override

@@ -119,10 +119,11 @@ public class Loader {
 		    		String clazzName = createClassName(fileTemp);
 		    	    String packageName = createPackageName(clazzName, fileTemp);
 		    	   
-			    	if(!packageName.contains("test")) {
+			    	if(!packageName.contains("test") && !packageName.contains("junit")) {
 			    		Package pakage = findClassesPackageByKey(packageName);
 			    		if(mapClassesPackages.isEmpty()) {
 			    			sut.setFullName(packageName);
+			    			System.out.println("---" + sut.getFullName());
 			    		}
 			    		if(pakage == null) {
 			    			pakage = createPackage(packageName);
@@ -130,6 +131,7 @@ public class Loader {
 			    			addClassToPackage(pakage, clazzName);
 			    			pakage.setMySut(sut);
 			    			sut.addPackage(pakage);
+			    			System.out.println("---" + sut.getFullName());
 				    	} else {
 				    		addClassToPackage(pakage, clazzName);
 				    	}
@@ -140,7 +142,9 @@ public class Loader {
 	            findPackages(file.getAbsolutePath());
 	        }
 	    }
-	
+	    if (sut.getFullName() == null) {
+	    	sut.setFullName("nomeNonIndividuato");
+	    }
 	
 	}
 	

@@ -1,9 +1,14 @@
 package it.unibas.trikc.repository.clusters;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.simpleframework.xml.Serializer;
+import org.simpleframework.xml.core.Persister;
+
 import it.unibas.trikc.modelEntity.Clusters;
+import it.unibas.trikc.modelEntity.DissimilarityMatrix;
 import it.unibas.trikc.modelEntity.method.TestCase;
 import it.unibas.trikc.repository.XMLException;
 
@@ -11,12 +16,32 @@ public class DAOMockClusters implements IDAOClusters {
 
 	@Override
 	public void save(Clusters clusters, String nameFile) throws XMLException{
-		
+		Serializer serializer = new Persister(); 
+		File result = new File("./storage/" + nameFile + ".xml"); 
+		//File result = new File(path.toString()+"/" + nameFile + ".xml"); 
+		try {
+			serializer.write(clusters, result);
+		} catch (Exception e) {
+			//e.printStackTrace();
+			throw new XMLException(e);
+		}
 	}
 
 	@Override
 	public Clusters load(String nameFile) throws XMLException{
-		Clusters clusters = new Clusters(); 
+		
+		Serializer serializer = new Persister(); 
+		//File result = new File(path.toString()+"/" + nameFile + ".xml"); 
+		File result = new File("./storage/" + nameFile + ".xml"); 
+		Clusters clusters  = null; 
+		try {
+			clusters = serializer.read(Clusters.class, result); 
+		} catch (Exception e) {
+			//e.printStackTrace();
+			throw new XMLException(e);
+		}
+		return clusters;
+		/*Clusters clusters = new Clusters(); 
 		
 		TestCase testCase1 = new TestCase();
 		TestCase testCase2 = new TestCase();
@@ -40,7 +65,7 @@ public class DAOMockClusters implements IDAOClusters {
 		clusters.setCluster("Cluster1", cluster1);
 		clusters.setCluster("Cluster2", cluster2);
 		
-		return clusters;
+		return clusters;*/
 	}
 
 }

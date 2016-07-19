@@ -20,7 +20,7 @@ public class DAOXmlDissimilarityMatrix implements IDAODissimilarityMatrix {
 		path.append("storage");
 		
 		Serializer serializer = new Persister(); 
-//		File result = new File("/storage/" + nameFile + ".xml"); 
+		//File result = new File("./storage/" + nameFile + ".xml"); 
 		File result = new File(path.toString()+"/" + nameFile + ".xml"); 
 		try {
 			serializer.write(matrix, result);

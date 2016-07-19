@@ -6,7 +6,7 @@ import it.unibas.trikc.modelEntity.clustering.algorithm.Cluster;
 
 public interface IVisitor {
 
-	void visit(Cluster cluster);
+	void visit(Cluster cluster, double level);
 	void setMatrix(DissimilarityMatrix matrix); 
 	void setClusters(Clusters clusters); 
 	

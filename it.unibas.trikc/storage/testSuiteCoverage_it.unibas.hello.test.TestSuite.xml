@@ -1,0 +1,123 @@
+<testSuite>
+   <name>it.unibas.hello.test.TestSuite</name>
+   <testCases class="java.util.ArrayList">
+      <testCase>
+         <name>it.unibas.hello.test.TestHelloImplJUnit3.testHello</name>
+         <coveredLines class="java.util.ArrayList">
+            <line>
+               <number>3</number>
+               <id>it.unibas.hello.HelloImpl.&lt;init&gt;()V.3</id>
+               <myMethod>
+                  <name>&lt;init&gt;</name>
+                  <myClass class="it.unibas.trikc.modelEntity.compositeClass.CompositeClass">
+                     <name>it.unibas.hello.HelloImpl</name>
+                     <myPackage>
+                        <name>it.unibas.hello</name>
+                        <mySut>
+                           <name>it.unibas.hello</name>
+                        </mySut>
+                     </myPackage>
+                     <classes class="java.util.ArrayList"/>
+                  </myClass>
+                  <descriptor>&lt;init&gt;()V</descriptor>
+               </myMethod>
+            </line>
+            <line>
+               <number>5</number>
+               <id>it.unibas.hello.HelloImpl.&lt;init&gt;()V.5</id>
+               <myMethod>
+                  <name>&lt;init&gt;</name>
+                  <myClass class="it.unibas.trikc.modelEntity.compositeClass.CompositeClass">
+                     <name>it.unibas.hello.HelloImpl</name>
+                     <myPackage>
+                        <name>it.unibas.hello</name>
+                        <mySut>
+                           <name>it.unibas.hello</name>
+                        </mySut>
+                     </myPackage>
+                     <classes class="java.util.ArrayList"/>
+                  </myClass>
+                  <descriptor>&lt;init&gt;()V</descriptor>
+               </myMethod>
+            </line>
+            <line>
+               <number>20</number>
+               <id>it.unibas.hello.HelloImpl.getHelloMessage()Ljava/lang/String;.20</id>
+               <myMethod>
+                  <name>getHelloMessage</name>
+                  <myClass class="it.unibas.trikc.modelEntity.compositeClass.CompositeClass">
+                     <name>it.unibas.hello.HelloImpl</name>
+                     <myPackage>
+                        <name>it.unibas.hello</name>
+                        <mySut>
+                           <name>it.unibas.hello</name>
+                        </mySut>
+                     </myPackage>
+                     <classes class="java.util.ArrayList"/>
+                  </myClass>
+                  <descriptor>getHelloMessage()Ljava/lang/String;</descriptor>
+               </myMethod>
+            </line>
+         </coveredLines>
+      </testCase>
+      <testCase>
+         <name>it.unibas.hello.test.TestHelloImplJUnit3.testEmpty</name>
+         <coveredLines class="java.util.ArrayList">
+            <line>
+               <number>3</number>
+               <id>it.unibas.hello.HelloImpl.&lt;init&gt;()V.3</id>
+               <myMethod>
+                  <name>&lt;init&gt;</name>
+                  <myClass class="it.unibas.trikc.modelEntity.compositeClass.CompositeClass">
+                     <name>it.unibas.hello.HelloImpl</name>
+                     <myPackage>
+                        <name>it.unibas.hello</name>
+                        <mySut>
+                           <name>it.unibas.hello</name>
+                        </mySut>
+                     </myPackage>
+                     <classes class="java.util.ArrayList"/>
+                  </myClass>
+                  <descriptor>&lt;init&gt;()V</descriptor>
+               </myMethod>
+            </line>
+            <line>
+               <number>5</number>
+               <id>it.unibas.hello.HelloImpl.&lt;init&gt;()V.5</id>
+               <myMethod>
+                  <name>&lt;init&gt;</name>
+                  <myClass class="it.unibas.trikc.modelEntity.compositeClass.CompositeClass">
+                     <name>it.unibas.hello.HelloImpl</name>
+                     <myPackage>
+                        <name>it.unibas.hello</name>
+                        <mySut>
+                           <name>it.unibas.hello</name>
+                        </mySut>
+                     </myPackage>
+                     <classes class="java.util.ArrayList"/>
+                  </myClass>
+                  <descriptor>&lt;init&gt;()V</descriptor>
+               </myMethod>
+            </line>
+            <line>
+               <number>20</number>
+               <id>it.unibas.hello.HelloImpl.getHelloMessage()Ljava/lang/String;.20</id>
+               <myMethod>
+                  <name>getHelloMessage</name>
+                  <myClass class="it.unibas.trikc.modelEntity.compositeClass.CompositeClass">
+                     <name>it.unibas.hello.HelloImpl</name>
+                     <myPackage>
+                        <name>it.unibas.hello</name>
+                        <mySut>
+                           <name>it.unibas.hello</name>
+                        </mySut>
+                     </myPackage>
+                     <classes class="java.util.ArrayList"/>
+                  </myClass>
+                  <descriptor>getHelloMessage()Ljava/lang/String;</descriptor>
+               </myMethod>
+            </line>
+         </coveredLines>
+      </testCase>
+   </testCases>
+</testSuite>

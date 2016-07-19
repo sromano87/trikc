@@ -34,9 +34,15 @@ public class PageReducing extends Composite {
 	private static Logger logger = Logger.getLogger(PageReducing.class.getName());
 
 	private Label labelReducing;
-	private Button buttonReducing, buttonLoad;
-	private Combo comboReducing, comboStrategy;
+	private Button buttonReducing;
+
+	private static Button buttonLoad;
+	private static Combo comboReducing;
+
+	private Combo comboStrategy;
 	private IStrategyReduction strategy;
+	private Label lblNewLabel;
+	private static List<File> listaFile = null;
 	//private int indexDissimilarity, indexStrategy;
 
 	/**
@@ -49,53 +55,40 @@ public class PageReducing extends Composite {
 		super(parent, style);
 
 		buttonReducing = new Button(this, SWT.NONE);
-		buttonReducing.setBounds(29, 150, 109, 28);
-		buttonReducing.setText("GettingReducing");
+		buttonReducing.setBounds(378, 54, 109, 28);
+		buttonReducing.setText("New Reducing");
 
 		labelReducing = new Label(this, SWT.NONE);
-		labelReducing.setBounds(265, 45, 175, 14);
+		labelReducing.setText("Select the Strategy and run New Reducing");
+		labelReducing.setBounds(20, 38, 293, 14);
 
 		comboReducing = new Combo(this, SWT.NONE);
-		comboReducing.setBounds(29, 42, 203, 22);
+		comboReducing.setBounds(20, 143, 293, 23);
 
 		comboStrategy = new Combo(this, SWT.NONE);
-		comboStrategy.setBounds(29, 98, 203, 23);
+		comboStrategy.setBounds(20, 58, 293, 23);
 
 		buttonLoad = new Button(this, SWT.NONE);
-		buttonLoad.setBounds(155, 150, 70, 28);
+		buttonLoad.setBounds(378, 139, 109, 28);
 		buttonLoad.setText("Load");
 
-		List<File> listaFile = existingReducing();
-		if (listaFile.size() > 0) {
-			for (File file : listaFile) {
-				comboReducing.add(file.getName());
-			}
-			labelReducing.setText("existing reducing");
-			comboStrategy.setEnabled(false);
-			comboReducing.setEnabled(true);
-			buttonReducing.setEnabled(false);
-		} else {
-			comboReducing.setEnabled(true);
-			buttonReducing.setEnabled(true);
-			buttonLoad.setEnabled(false);
-			comboStrategy.setEnabled(true);
-		}
-		comboReducing.add("New Reducing");
-		comboReducing.select(0);
-
-		if (comboReducing.getItem(comboReducing.getSelectionIndex()).equals("New Reducing")) {
-			comboStrategy.setEnabled(true);
-		}
+		//List<File> listaFile = existingReducing();
+		
+		
 
 		List<String> strategyList = strategySearch();
 		for (String strategy : strategyList) {
 			comboStrategy.add(strategy.substring(0, strategy.length() - 5));
 		}
 		comboStrategy.select(0);
+		
+		lblNewLabel = new Label(this, SWT.NONE);
+		lblNewLabel.setBounds(20, 122, 293, 15);
+		lblNewLabel.setText("Select an existing Reducing and load it");
 
 		comboReducing.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
-				int index = comboReducing.getSelectionIndex();
+				/*int index = comboReducing.getSelectionIndex();
 				if (comboReducing.getItem(index).equals("New Reducing")) {
 					buttonReducing.setEnabled(true);
 					comboStrategy.setEnabled(true);
@@ -104,13 +97,13 @@ public class PageReducing extends Composite {
 					buttonReducing.setEnabled(false);
 					comboStrategy.setEnabled(false);
 					buttonLoad.setEnabled(true);
-				}
+				}*/
 			}
 		});
 
 		comboStrategy.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
-				buttonLoad.setEnabled(false);
+				//buttonLoad.setEnabled(false);
 			}
 		});
 
@@ -131,7 +124,7 @@ public class PageReducing extends Composite {
 				if (strategy == null) {
 
 					IStatus status = new Status(IStatus.ERROR, "pageReducing",
-							"non ï¿½ stata selezionata alcuna strategia");
+							"non è stata selezionata alcuna strategia");
 					ErrorDialog.openError(shell, "Error", "Reducing Error", status);
 				} else {
 					TestSuite ts = strategy
@@ -188,22 +181,37 @@ public class PageReducing extends Composite {
 
 	}
 
-	public List<File> existingReducing() {
-		List<File> listaFileCoverage = new ArrayList<File>();
+	public static void existingReducing() {
+		listaFile = new ArrayList<File>();
 		URL location = PageReducing.class.getProtectionDomain().getCodeSource().getLocation();
 		StringBuilder path = new StringBuilder();
 		path.append(location.getPath());
 		path.append("storage");
 		File directoryStorage = new File(path.toString());
-		File[] listaFile = directoryStorage.listFiles();
-		if (listaFile != null) {
-			for (int i = 0; i < listaFile.length; i++) {
-				if (listaFile[i].getName().contains("Reduction_")) {
-					listaFileCoverage.add(listaFile[i]);
+		File[] listaFiles = directoryStorage.listFiles();
+		if (listaFiles != null) {
+			for (int i = 0; i < listaFiles.length; i++) {
+				if (listaFiles[i].getName().contains("Reduction_"+(String)Modello.getInstance().getBean(Constants.TEST_SUITE))
+						&& !verifyExistence(listaFiles[i])) {
+					listaFile.add(listaFiles[i]);
 				}
 			}
 		}
-		return listaFileCoverage;
+		if (listaFile.size() > 0) {
+			for (File file : listaFile) {
+				comboReducing.add(file.getName());
+			}
+			
+		} 
+		
+		if(comboReducing.getItemCount()>0) {
+			comboReducing.select(0);
+			comboReducing.setEnabled(true);
+			buttonLoad.setEnabled(true);
+		} else {
+			comboReducing.setEnabled(false);
+			buttonLoad.setEnabled(false);
+		}
 	}
 
 	public List<String> strategySearch() {
@@ -222,6 +230,22 @@ public class PageReducing extends Composite {
 			}
 		}
 		return risultato;
+	}
+	
+	public static boolean verifyExistence(File file) {
+		String[] comboItems = comboReducing.getItems();
+		int count =0;
+		for(int j=0; j<comboItems.length; j++) {
+			logger.info("fileName "+file.getName()+" comboItem "+comboItems[j]+ " equals? "+file.getName().equals(comboItems[j]));
+
+			if (file.getName().substring(0, file.getName().length()-4).equals(comboItems[j].substring(0, comboItems[j].length()-4))) {
+				count++;
+			}
+		}
+		if(count==0) {
+			return false;
+		}
+		return true;
 	}
 
 	@Override

@@ -35,13 +35,15 @@ import it.unibas.trikc.repository.reduction.IDAOTestSuite;
 
 public class PageDissimilarity extends Composite {
 	private static Logger logger = Logger.getLogger(PageDissimilarity.class.getName());
-
-	private Label labelDissimilarity;
-	private Button buttonDissimilarity, buttonLoad;
-	private Combo comboDissimilarity, comboStrategy;
+	private static Button buttonDissimilarity, buttonLoad;
+	private static Combo comboDissimilarity;
+	private Combo comboStrategy;
 	private IStrategyDissimilarity strategy;
 	private int indexDissimilarity, indexStrategy;
 	private TestSuite testSuite; 
+	private static List<File> listaFile = null;
+	private Label lblNewLabel;
+	private Label lblSelectAnExisting;
 
 	/**
 	 * Create the composite.
@@ -53,69 +55,54 @@ public class PageDissimilarity extends Composite {
 		super(parent, style);
 
 		buttonDissimilarity = new Button(this, SWT.NONE);
-		buttonDissimilarity.setBounds(29, 150, 109, 28);
-		buttonDissimilarity.setText("GettingDissimilarity");
-
-		labelDissimilarity = new Label(this, SWT.NONE);
-		labelDissimilarity.setBounds(265, 45, 175, 14);
+		buttonDissimilarity.setBounds(385, 73, 109, 28);
+		buttonDissimilarity.setText("New Dissimilarity");
 
 		comboDissimilarity = new Combo(this, SWT.NONE);
-		comboDissimilarity.setBounds(29, 42, 203, 22);
+		comboDissimilarity.setBounds(29, 148, 301, 23);
 
 		comboStrategy = new Combo(this, SWT.NONE);
-		comboStrategy.setBounds(29, 98, 203, 23);
+		comboStrategy.setBounds(29, 77, 301, 23);
 
 		buttonLoad = new Button(this, SWT.NONE);
-		buttonLoad.setBounds(155, 150, 70, 28);
+		buttonLoad.setBounds(385, 144, 109, 28);
 		buttonLoad.setText("Load");
 
-		List<File> listaFile = existingDissimilarity();
-		if (listaFile.size() > 0) {
-			for (File file : listaFile) {
-				comboDissimilarity.add(file.getName());
-			}
-			labelDissimilarity.setText("existing dissimilarity");
-			comboStrategy.setEnabled(false);
-			comboDissimilarity.setEnabled(true);
-			buttonDissimilarity.setEnabled(false);
-		} else {
-			comboDissimilarity.setEnabled(true);
-			buttonDissimilarity.setEnabled(true);
-			buttonLoad.setEnabled(false);
-			comboStrategy.setEnabled(true);
-		}
-		comboDissimilarity.add("New Dissimilarity");
-		comboDissimilarity.select(0);
-
-		if (comboDissimilarity.getItem(comboDissimilarity.getSelectionIndex()).equals("New Dissimilarity")) {
-			comboStrategy.setEnabled(true);
-		}
+		//List<File> listaFile = existingDissimilarity();
 
 		List<String> strategyList = strategySearch();
 		for (String strategy : strategyList) {
 			comboStrategy.add(strategy.substring(0, strategy.length() - 5));
 		}
 		comboStrategy.select(0);
+		
+		lblNewLabel = new Label(this, SWT.NONE);
+		lblNewLabel.setBounds(29, 56, 301, 15);
+		lblNewLabel.setText("Select the Strategy and run New Dissimilarity");
+		
+		lblSelectAnExisting = new Label(this, SWT.NONE);
+		lblSelectAnExisting.setText("Select an existing Dissimilarity and load it");
+		lblSelectAnExisting.setBounds(29, 127, 301, 15);
 
 		comboDissimilarity.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
-				int index = comboDissimilarity.getSelectionIndex();
+				/*int index = comboDissimilarity.getSelectionIndex();
 				if (comboDissimilarity.getItem(index).equals("New Dissimilarity")) {
 					testSuite = (TestSuite)Modello.getInstance().getBean(Constants.TEST_SUITE_OBJ);
 					buttonDissimilarity.setEnabled(true);
 					comboStrategy.setEnabled(true);
 					buttonLoad.setEnabled(false);
-				} else {
+				} else {*/
 					IDAOTestSuite daoTs = new DAOXmlTestSuite();
 					try {
-						testSuite = daoTs.load(comboDissimilarity.getItem(index));
+						testSuite = daoTs.load(comboDissimilarity.getItem(comboDissimilarity.getSelectionIndex()));
 					} catch (XMLException e1) {
 						e1.printStackTrace();
 					}
 					buttonDissimilarity.setEnabled(false);
 					comboStrategy.setEnabled(false);
 					buttonLoad.setEnabled(true);
-				}
+				//}*/
 			}
 		});
 
@@ -129,6 +116,7 @@ public class PageDissimilarity extends Composite {
 			
 			@Override
 			public void handleEvent(Event event) {
+				testSuite = (TestSuite)Modello.getInstance().getBean(Constants.TEST_SUITE_OBJ);
 				int indexStrategy = comboStrategy.getSelectionIndex();
 				switch (comboStrategy.getItem(indexStrategy)) {
 				case "StrategyStringKernelDissimilarity":
@@ -141,7 +129,7 @@ public class PageDissimilarity extends Composite {
 				Shell shell = getShell();
 				if (strategy == null) {
 					IStatus status = new Status(IStatus.ERROR, "pageDissimilarity",
-							"non ï¿½ stata selezionata alcuna strategia");
+							"non è stata selezionata alcuna strategia");
 					ErrorDialog.openError(shell, "Error", "Dissimilarity Error", status);
 				} else {
 					DissimilarityMatrix matrix = strategy.computeDissimilarity(testSuite);
@@ -155,6 +143,7 @@ public class PageDissimilarity extends Composite {
 							DirectoryDissimilarity dd = (DirectoryDissimilarity) Modello.getInstance().getBean(Constants.DIRECTORY_DISSIMILARITY);
 							dd.setPageComplete(true);
 						}
+						PageClustering.existingClustering();
 					} catch (XMLException e) {
 						IStatus status = new Status(IStatus.ERROR, "pageDissimilarity",
 								"errore nel salvataggio della matrice");
@@ -182,6 +171,7 @@ public class PageDissimilarity extends Composite {
 						DirectoryDissimilarity dd = (DirectoryDissimilarity) Modello.getInstance().getBean(Constants.DIRECTORY_DISSIMILARITY);
 						dd.setPageComplete(true);
 					}
+					PageClustering.existingClustering();
 				} catch (XMLException e) {
 					IStatus status = new Status(IStatus.ERROR, "pageDissimilarity",
 							"errore nel caricamnto della matrice");
@@ -193,22 +183,38 @@ public class PageDissimilarity extends Composite {
 		});
 	}
 
-	public List<File> existingDissimilarity() {
-		List<File> listaFileDissimilarity = new ArrayList<File>();
+	public static void existingDissimilarity() {
+		listaFile = new ArrayList<File>();
 		URL location = PageDissimilarity.class.getProtectionDomain().getCodeSource().getLocation();
 		StringBuilder path = new StringBuilder();
 		path.append(location.getPath());
 		path.append("storage");
 		File directoryStorage = new File(path.toString());
-		File[] listaFile = directoryStorage.listFiles();
-		if (listaFile != null) {
-			for (int i = 0; i < listaFile.length; i++) {
-				if (listaFile[i].getName().contains("DissimilarityMatrix_")) {
-					listaFileDissimilarity.add(listaFile[i]);
+		File[] listaFiles = directoryStorage.listFiles();
+		if (listaFiles != null) {
+			for (int i = 0; i < listaFiles.length; i++) {
+				if (listaFiles[i].getName().contains("DissimilarityMatrix_"+(String)Modello.getInstance().getBean(Constants.TEST_SUITE))
+						&& !verifyExistence(listaFiles[i])) {
+					listaFile.add(listaFiles[i]);
 				}
 			}
 		}
-		return listaFileDissimilarity;
+		if (listaFile.size() > 0) {
+			for (File file : listaFile) {
+				comboDissimilarity.add(file.getName());
+			}
+			
+		}
+		if(comboDissimilarity.getItemCount()>0) {
+			comboDissimilarity.select(0);
+			comboDissimilarity.setEnabled(true);
+			buttonLoad.setEnabled(true);
+		} else {
+			comboDissimilarity.setEnabled(false);
+			buttonLoad.setEnabled(false);
+		}
+		
+		//return listaFile;
 	}
 
 	public List<String> strategySearch() {
@@ -227,6 +233,22 @@ public class PageDissimilarity extends Composite {
 			}
 		}
 		return risultato;
+	}
+	
+	public static boolean verifyExistence(File file) {
+		String[] comboItems = comboDissimilarity.getItems();
+		int count =0;
+		for(int j=0; j<comboItems.length; j++) {
+			logger.info("fileName "+file.getName()+" comboItem "+comboItems[j]+ " equals? "+file.getName().equals(comboItems[j]));
+			if (file.getName().substring(0, file.getName().length()-4).equals(comboItems[j].substring(0, comboItems[j].length()-4))) {
+				count++;
+			}
+		}
+		logger.info("count "+count);
+		if(count==0) {
+			return false;
+		}
+		return true;
 	}
 
 	@Override

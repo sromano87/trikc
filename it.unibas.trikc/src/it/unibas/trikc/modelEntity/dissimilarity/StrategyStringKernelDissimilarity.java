@@ -16,6 +16,7 @@ public class StrategyStringKernelDissimilarity implements IStrategyDissimilarity
 	public DissimilarityMatrix computeDissimilarity(TestSuite testSuite) {
 		testCases = testSuite.getTestCases();
 		testCases = checkEmptyTestCase(testCases);
+		System.out.println("test case "+ testCases.size());
 		DissimilarityMatrix dissimilarityMatrix = new DissimilarityMatrix(testCases.size());
 		dissimilarityMatrix.setHeaders(testCases);
 		double dissimilarity = 0;
@@ -24,6 +25,8 @@ public class StrategyStringKernelDissimilarity implements IStrategyDissimilarity
 				dissimilarity = compareTestCases(testCases.get(i),testCases.get(j));
 				dissimilarityMatrix.setValueAt(i, j,dissimilarity);
 				dissimilarityMatrix.setValueAt(j, i,dissimilarity);
+				System.out.println("-- sono in string kernel  " + i+","+j + "--> "+ dissimilarity);
+				
 				
 			}
 		}

@@ -33,7 +33,7 @@ public class TestCase extends AbstractMethod {
 	@Override
 	public String toString() {
 		StringBuilder stringBuilder = new StringBuilder();
-		stringBuilder.append(super.getFullName());
+		stringBuilder.append(super.getFullName() + " - " + this.coveredLines.size());
 		stringBuilder.append("\n");
 		return stringBuilder.toString();
 	}

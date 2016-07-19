@@ -16,7 +16,7 @@ public class DirectoryClustering extends WizardPage{
 	public DirectoryClustering() {
 		super("wizardPage");
 		setTitle("CLUSTERING");
-		setDescription("This page is calculated the clustering. Select from the first combobox an existing clustering or a new. In the case of new clustering select from the second combobox the type of strategy");
+		setDescription("Clustering will be calculated in this page.Select from the first combobox an existing clustering or a new one. In case of new clustering, select from the second combobox the kind of strategy.");
 		setPageComplete(false);
 	}
 

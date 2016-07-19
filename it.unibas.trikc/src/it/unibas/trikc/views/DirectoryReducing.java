@@ -12,7 +12,7 @@ public class DirectoryReducing extends WizardPage{
 	public DirectoryReducing() {
 		super("wizardPage");
 		setTitle("REDUCING");
-		setDescription("This page is calculated the reducing. Select from the first combobox an existing reducing or a new. In the case of new reducing select from the second combobox the type of strategy");
+		setDescription("Reducing will be calculated in this page. Select from the first combobox an existing reducing or a new one. In case of new reducing, select from the second combobox the kind of strategy.");
 		setPageComplete(false);
 	}
 

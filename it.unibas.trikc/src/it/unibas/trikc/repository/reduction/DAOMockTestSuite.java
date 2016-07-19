@@ -1,5 +1,12 @@
 package it.unibas.trikc.repository.reduction;
 
+import java.io.File;
+import java.net.URL;
+
+import org.simpleframework.xml.Serializer;
+import org.simpleframework.xml.core.Persister;
+
+import it.unibas.trikc.modelEntity.Clusters;
 import it.unibas.trikc.modelEntity.Line;
 import it.unibas.trikc.modelEntity.Package;
 import it.unibas.trikc.modelEntity.Sut;
@@ -9,16 +16,38 @@ import it.unibas.trikc.modelEntity.compositeClass.LeafNestedClass;
 import it.unibas.trikc.modelEntity.method.MyMethod;
 import it.unibas.trikc.modelEntity.method.TestCase;
 import it.unibas.trikc.repository.XMLException;
+import it.unibas.trikc.views.PageCoverage;
 
 public class DAOMockTestSuite implements IDAOTestSuite {
 
 	@Override
 	public void save(TestSuite testSuite, String nameFile) throws XMLException{
-			
+		Serializer serializer = new Persister(); 
+		File result = new File("./storage/" + nameFile + ".xml"); 
+		//File result = new File(path.toString()+"/"+ nameFile + ".xml");
+		try {
+			serializer.write(testSuite, result);
+		} catch (Exception e) {
+			//e.printStackTrace();
+			throw new XMLException(e);
+		}
 	}
 
 	@Override
 	public TestSuite load(String nameFile) throws XMLException{
+		Serializer serializer = new Persister(); 
+		//File result = new File(path.toString()+"/" + nameFile + ".xml"); 
+		File result = new File("./storage/" + nameFile + ".xml"); 
+		TestSuite ts  = null; 
+		try {
+			ts = serializer.read(TestSuite.class, result); 
+		} catch (Exception e) {
+			//e.printStackTrace();
+			throw new XMLException(e);
+		}
+		return ts;
+		
+		/*
 		TestSuite testSuite = new TestSuite();
 		testSuite.setFullName("TestSuite1");
 		
@@ -67,6 +96,7 @@ public class DAOMockTestSuite implements IDAOTestSuite {
 		testSuite.addTestCase(testCase2);
 		
 		return testSuite;
+		*/
 	}
 
 }

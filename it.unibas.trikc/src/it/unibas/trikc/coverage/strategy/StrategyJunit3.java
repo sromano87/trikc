@@ -1,5 +1,6 @@
 package it.unibas.trikc.coverage.strategy;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -41,16 +42,19 @@ public class StrategyJunit3 extends AbstractStrategyJunit{
 			junit.framework.TestSuite testClass = (junit.framework.TestSuite) listOfTestsClasses.get(i);
 			for(int cm = 0; cm < testClass.countTestCases(); cm++) {
 				Class<?> testClassToCoverage = getJacocoServices().createInstrument(super.getClazz().getFullName(), testClass.getName());	
-				if(!(testClass.testAt(cm).toString().contains("jacoco"))) {
+				if(!(testClass.testAt(cm).toString().contains("jacoco")) && !(testClass.testAt(cm).toString().contains("setUp"))) {
 					String[] tmp = testClass.testAt(cm).toString().split("\\(");
 					String nameTestMethod = testClass.getName() + "." + tmp[0];	
 					TestCase testCase = this.findTestCase(nameTestMethod);
 
-					Request request = Request.method(testClassToCoverage, tmp[0]);
-					new JUnitCore().run(request);
+					try{
+						Request request = Request.method(testClassToCoverage, tmp[0]);
+						new JUnitCore().run(request);
+						CoverageBuilder coverageBuilder = getJacocoServices().collectAnalysis(super.getClazz().getFullName());
+						analyzeResult(coverageBuilder, getClazz(), testCase);	
+					}catch(SQLException e){
 						
-					CoverageBuilder coverageBuilder = getJacocoServices().collectAnalysis(super.getClazz().getFullName());
-					analyzeResult(coverageBuilder, getClazz(), testCase);	
+					}						
 				}
 				getJacocoServices().runtimeShutdown();	
 			}	

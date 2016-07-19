@@ -17,7 +17,7 @@ public class DirectoryCoverage  extends WizardPage{
 	public DirectoryCoverage() {
 		super("wizardPageCoverage");
 		setTitle("COVERAGE");
-		setDescription("This page is calculated the coverage. Select from the combobox an existing covered measure or a new");
+		setDescription("Coverage will be calculated in this page. Select from the combobox an existing coverage measure or a new one.");
 		setPageComplete(false);	
 	}
 

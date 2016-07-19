@@ -12,7 +12,7 @@ public class DirectoryDissimilarity extends WizardPage{
 	public DirectoryDissimilarity() {
 		super("wizardPage");
 		setTitle("DISSIMILARITY");
-		setDescription("This page is calculated the dissimilarity. Select from the first combobox an existing dissimilarity measure or a new. In the case of new dissimilarity select from the second combobox the type of strategy");
+		setDescription("Dissimilarity will be calculated in this page. Select from the first combobox an existing dissimilarity measure or a new one. In case of new dissimilarity, select from the second combobox the kind of strategy.");
 		setPageComplete(false);
 	}
 

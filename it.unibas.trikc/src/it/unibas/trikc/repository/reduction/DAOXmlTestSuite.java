@@ -42,7 +42,7 @@ public class DAOXmlTestSuite implements IDAOTestSuite {
 		path.append(location.getPath());
 		path.append("storage");
 		Serializer serializer = new Persister(); 
-		//File result = new File("/storage/" + nameFile + ".xml"); 
+		//File result = new File("./storage/" + nameFile + ".xml"); 
 		File result = new File(path.toString()+"/" + nameFile + ".xml"); 
 		TestSuite testSuite = new TestSuite(); 
 		try {
