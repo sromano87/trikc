@@ -84,33 +84,37 @@ public class PageDissimilarity extends Composite {
 		lblSelectAnExisting.setText("Select an existing Dissimilarity and load it");
 		lblSelectAnExisting.setBounds(29, 127, 301, 15);
 
+		/*
 		comboDissimilarity.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
-				/*int index = comboDissimilarity.getSelectionIndex();
+				int index = comboDissimilarity.getSelectionIndex();
 				if (comboDissimilarity.getItem(index).equals("New Dissimilarity")) {
 					testSuite = (TestSuite)Modello.getInstance().getBean(Constants.TEST_SUITE_OBJ);
 					buttonDissimilarity.setEnabled(true);
 					comboStrategy.setEnabled(true);
 					buttonLoad.setEnabled(false);
-				} else {*/
+				} else {
 					IDAOTestSuite daoTs = new DAOXmlTestSuite();
-					try {
-						testSuite = daoTs.load(comboDissimilarity.getItem(comboDissimilarity.getSelectionIndex()));
-					} catch (XMLException e1) {
-						e1.printStackTrace();
-					}
+					//try {
+						//testSuite = daoTs.load(comboDissimilarity.getItem(comboDissimilarity.getSelectionIndex()).substring(0, 
+						//		comboDissimilarity.getItem(comboDissimilarity.getSelectionIndex()).length() - 4));
+						testSuite = (TestSuite)Modello.getInstance().getBean(Constants.TEST_SUITE_OBJ);
+					//} catch (XMLException e1) {
+					//	e1.printStackTrace();
+					//} 
 					buttonDissimilarity.setEnabled(false);
 					comboStrategy.setEnabled(false);
 					buttonLoad.setEnabled(true);
-				//}*/
+				//}
 			}
 		});
-
+		
 		comboStrategy.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				buttonLoad.setEnabled(false);
 			}
 		});
+		*/
 
 		buttonDissimilarity.addListener(SWT.Selection, new Listener() {
 			
@@ -129,7 +133,7 @@ public class PageDissimilarity extends Composite {
 				Shell shell = getShell();
 				if (strategy == null) {
 					IStatus status = new Status(IStatus.ERROR, "pageDissimilarity",
-							"non è stata selezionata alcuna strategia");
+							"non ï¿½ stata selezionata alcuna strategia");
 					ErrorDialog.openError(shell, "Error", "Dissimilarity Error", status);
 				} else {
 					DissimilarityMatrix matrix = strategy.computeDissimilarity(testSuite);
@@ -185,10 +189,10 @@ public class PageDissimilarity extends Composite {
 
 	public static void existingDissimilarity() {
 		listaFile = new ArrayList<File>();
-		URL location = PageDissimilarity.class.getProtectionDomain().getCodeSource().getLocation();
-		StringBuilder path = new StringBuilder();
-		path.append(location.getPath());
-		path.append("storage");
+		
+		String path = System.getProperty("user.home"); 
+		path = path + "/.TRIKC/";
+		
 		File directoryStorage = new File(path.toString());
 		File[] listaFiles = directoryStorage.listFiles();
 		if (listaFiles != null) {

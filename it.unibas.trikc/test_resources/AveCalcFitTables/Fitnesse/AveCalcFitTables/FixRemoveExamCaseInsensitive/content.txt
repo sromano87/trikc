@@ -1,0 +1,13 @@
+There is an error in RemoveExam. This computation should remove the exam without considering upper-case letters (capitals). Fix the error.
+
+!include PopulateDatabase
+----
+1) remove existing exams
+
+!|fit.ActionFixture  |
+|start | fit_tests.RemoveExam|  |
+|check |number of exams | 4 |
+|enter |remove exam | software |
+|check |number of exams | 3 |
+|enter |remove exam | sei |
+|check |number of exams | 2 |

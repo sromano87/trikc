@@ -1,0 +1,97 @@
+The University changed his policy. Now, a student can defend his/her thesis only if, he/she:
+
+ * passed at least 10 exams (an exam is passed only if the vote is >= 18) and
+ * the 'Total number of CFU' is >= 70 and
+ * The value of the following formula (named F) is >= 3
+
+The value of F is computed considering all the following cases:
+If a student has a number of '30 cum laude' minor than 2 then F=F+1; if a student has a number of '30 cum laude' included between 2 and 4 then F=F+2; if a student has a number of '30 cum laude' > 5 then F=F+3. If a student has a number of '30 cum laude' equal to 5 then F=F+2.5.
+If a student has passed the exams "DB" and "Software" then 10% of F is added to F, otherwise 5% is subtracted. 0.1 is added to F for each passed exam over the mandatory 10.  
+
+!include PopulateDatabase
+-----
+1) Conditions are not verified
+
+!|fit.ActionFixture|
+|start | fit_tests.ComputeDefendeThesis|  |
+|check | exams inserted | 4 |
+|check | total cfu | 28 |
+|check | defend thesis | false |
+|enter | exam name | software 4|
+|enter | vote | 24 |
+|enter | cfu | 10 |
+|press | insert | |
+|enter | exam name | DB 1|
+|enter | vote | 30 cum laude |
+|enter | cfu | 10 |
+|press | insert | |
+|enter | exam name | software 5|
+|enter | vote | 30 cum laude  |
+|enter | cfu | 10 |
+|press | insert | |
+|check | exams inserted | 7 |
+|check | total cfu | 58 |
+|check | value of F | 2.2 |
+|check | defend thesis | false |
+
+-----
+2) Conditions are not verified (exams are sufficient, CFU < 70 and F < 3) 
+
+!|fit.ActionFixture|
+|start | fit_tests.ComputeDefendeThesis|  |
+|check | exams inserted | 7 |
+|check | total cfu | 58 |
+|check | defend thesis | false |
+|enter | exam name | Web Tools |
+|enter | vote | 24 |
+|enter | cfu | 1 |
+|press | insert | |
+|enter | exam name | Testing Tools |
+|enter | vote | 30 |
+|enter | cfu | 1 |
+|press | insert | |
+|enter | exam name | Analysis |
+|enter | vote | 30|
+|enter | cfu | 1 |
+|press | insert | |
+|check | exams inserted | 10 |
+|check | total cfu | 61 |
+|check | value of F | 2.2 |
+|check | defend thesis | false |
+
+-----
+3) Number of exams is sufficient, 'Total number of CFU' is >= 70 (but < 90)
+and F >=3
+
+!|fit.ActionFixture|
+|start | fit_tests.ComputeDefendeThesis|  |
+|check | exams inserted | 10 |
+|check | total cfu | 61 |
+|check | defend thesis | false |
+|enter | exam name | SW |
+|enter | vote | 24 |
+|enter | cfu | 5 |
+|press | insert | |
+|enter | exam name | WWW |
+|enter | vote | 30 cum laude |
+|enter | cfu | 5 |
+|press | insert | |
+|enter | exam name | Graphs |
+|enter | vote | 30 cum laude  |
+|enter | cfu | 5 |
+|press | insert | |
+|enter | exam name | software 6|
+|enter | vote | 30 cum laude  |
+|enter | cfu | 5 |
+|press | insert | |
+|enter | exam name | DB 2|
+|enter | vote | 30 cum laude  |
+|enter | cfu | 5 |
+|press | insert | |
+|check | total cfu | 86 |
+|check | exams inserted | 15 |
+|check | value of F | 3.7 |
+|check | defend thesis | true |
+
+-----
+

@@ -124,7 +124,7 @@ public class PageReducing extends Composite {
 				if (strategy == null) {
 
 					IStatus status = new Status(IStatus.ERROR, "pageReducing",
-							"non è stata selezionata alcuna strategia");
+							"non ï¿½ stata selezionata alcuna strategia");
 					ErrorDialog.openError(shell, "Error", "Reducing Error", status);
 				} else {
 					TestSuite ts = strategy
@@ -183,10 +183,10 @@ public class PageReducing extends Composite {
 
 	public static void existingReducing() {
 		listaFile = new ArrayList<File>();
-		URL location = PageReducing.class.getProtectionDomain().getCodeSource().getLocation();
-		StringBuilder path = new StringBuilder();
-		path.append(location.getPath());
-		path.append("storage");
+		
+		String path = System.getProperty("user.home"); 
+		path = path + "/.TRIKC/";
+		
 		File directoryStorage = new File(path.toString());
 		File[] listaFiles = directoryStorage.listFiles();
 		if (listaFiles != null) {

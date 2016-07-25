@@ -1,0 +1,19 @@
+A student can load from the database only positive (i.e., with vote >=18) exams.
+
+!include PopulateDatabase
+----
+1) Check total number of exams
+
+!|fit.ActionFixture  |
+|start | fit_tests.AddExam|  |
+|check |number of exams | 4 |
+
+2) Load only positive exams 
+
+!|fit_tests.LoadPositiveExams  |
+|name       | cfu | vote |
+|Software   |12   | 20   |
+|SEI  |6    | 24   |
+|DB         |10   | 30   |
+
+

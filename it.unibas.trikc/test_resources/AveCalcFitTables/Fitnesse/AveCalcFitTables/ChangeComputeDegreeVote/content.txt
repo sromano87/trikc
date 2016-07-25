@@ -1,0 +1,55 @@
+The University changed his policy of Degree Vote Computation. Now, the Degree vote is computed removing the '''two''' lowest positive vote and multiplying the obtained average for '''10/3'''. Negative vote are not considered in this calculation (as before). If the student has at least three '30 cum laude' then '0.5' is added to the degree vote. Pay attention the average is a Weighted arithmetic mean (see ComputeAverage).
+
+!include PopulateDataBase
+-----
+1) test 'Degree vote'
+
+!|fit.ActionFixture  |
+|start | fit_tests.VerifyDegreeVote|  |
+|check | degree vote | 100 |
+
+-----
+2) test 'Degree vote' with others negative exams
+
+!|fit.ActionFixture  |
+|start | fit_tests.VerifyDegreeVote|  |
+|check | degree vote | 100 |
+|enter | exam name | Web Services |
+|enter | vote | 10 |
+|enter | cfu | 10 |
+|press | insert | |
+|check | degree vote | 100 |
+
+-----
+3) test 'Degree vote' with others positive exams
+
+!|fit.ActionFixture  |
+|start | fit_tests.VerifyDegreeVote|  |
+|check | degree vote | 100 |
+|enter | exam name | SOA |
+|enter | vote | 28 |
+|enter | cfu | 10 |
+|press | insert | |
+|check | degree vote | 96,67 |
+
+-----
+4) test 'Degree vote' with three '30 cum laude' 
+
+!|fit.ActionFixture  |
+|start | fit_tests.VerifyDegreeVote|  |
+|check | degree vote | 96,67 |
+|enter | exam name | Model 1 |
+|enter | vote | 30 cum laude |
+|enter | cfu | 12 |
+|press | insert | |
+|check | degree vote | 97,92 |
+|enter | exam name | Model 2|
+|enter | vote | 30 cum laude |
+|enter | cfu | 6 |
+|press | insert | |
+|check | degree vote | 98,25 |
+|enter | exam name | Model 3 |
+|enter | vote | 30 cum laude |
+|enter | cfu | 10 |
+|press | insert | |
+|check | degree vote | 99,11 |

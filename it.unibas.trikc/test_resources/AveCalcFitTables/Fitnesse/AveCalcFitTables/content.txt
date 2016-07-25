@@ -1,0 +1,45 @@
+!anchor TopOfPage
+'''Contents'''
+
+    * .#Description
+    * .#Requirements
+    * .#ChangeRequirements
+----
+!anchor Description
+!2 Description
+
+AveCalc is a  “desktop application” that manages an electronic register (record book) for master students.  
+
+A student can add a new exam to the register, remove an existing exam and remove all exams. An exam has a name, a CFU (a positive number that represent the university credits) and a (optional) vote. An exam without vote is an exam not taken. The vote must be included (or equal) between 0 and 30. If the vote is >= 18 then the vote is positive, otherwise it is negative. It is possible to save the register and load it (all data or only positive exams). 
+
+AveCalc computes some statistics: average of the exams passed, total number of CFU, number of exams passed, (hypothetical) degree vote and whether the student has passed a number of exams sufficient to defend his/her thesis.
+
+!c http://files/Immagine_AveCalc.jpg
+
+----
+!anchor Requirements
+!2 Requirements
+
+0 AveCalcFitTables.PopulateDatabase
+1 AveCalcFitTables.AddExam
+2 AveCalcFitTables.RemoveExam
+3 AveCalcFitTables.RemoveAllExams
+4 AveCalcFitTables.LoadPositiveExams
+5 AveCalcFitTables.ComputeAverage
+6 AveCalcFitTables.ComputeNumberOfCfu
+7 AveCalcFitTables.ComputeNumberOfExams
+8 AveCalcFitTables.ComputeDegreeVote
+9 AveCalcFitTables.ComputeDefendThesis
+----
+!anchor ChangeRequirements
+!2 Change Requirements
+
+1 AveCalcFitTables.FixErrorInLoadPositiveExams
+2 AveCalcFitTables.FixRemoveExamCaseInsensitive
+3 AveCalcFitTables.ChangeComputeDegreeVote
+4 AveCalcFitTables.ChangeComputeDefendThesis
+
+
+----
+.#TopOfPage
+

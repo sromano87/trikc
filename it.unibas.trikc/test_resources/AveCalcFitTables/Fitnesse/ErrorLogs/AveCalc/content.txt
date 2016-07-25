@@ -1,0 +1,11 @@
+|'''Date: '''|!-11:24:31 AM (CET) on giovedì, marzo 15, 2007-!|
+|'''Command: '''|!-java -cp defaultPath fit.FitServer localhost 9083 1-!|
+|'''Exit code: '''|!-1-!|
+|'''Time elapsed: '''|!-0.75 seconds-!|
+----'''Standard Error:'''
+{{{java.lang.NoClassDefFoundError: fit/FitServer
+Exception in thread "main" }}}----'''Internal Exception:'''
+{{{ java.lang.Exception: FitClient: external process terminated before a connection could be established.
+	fitnesse.components.CommandRunningFitClient$EarlyTerminationRunnable.run(Unknown Source)
+	java.lang.Thread.run(Unknown Source)
+}}}

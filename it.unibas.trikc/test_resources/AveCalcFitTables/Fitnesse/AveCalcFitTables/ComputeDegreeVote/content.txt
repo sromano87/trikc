@@ -1,0 +1,43 @@
+The 'Degree vote' is updated each time an exam is added to the register. This value represent the hypothetical degree vote. The Degree vote is computed removing the lowest positive vote and multiplying the obtained average for 11/3. Negative vote are not considered in this calculation. If the student has at least three '30 cum laude' then '1' is added to the degree vote.
+
+!include PopulateDataBase
+-----
+1) test 'Degree vote'
+
+!|fit.ActionFixture  |
+|start | fit_tests.VerifyDegreeVote|  |
+|check | degree vote | 101,75 |
+
+-----
+2) test 'Degree vote' with others negative exams
+
+!|fit.ActionFixture  |
+|start | fit_tests.VerifyDegreeVote|  |
+|check | degree vote | 101,75 |
+|enter | exam name | Web Services |
+|enter | vote | 10 |
+|enter | cfu | 10 |
+|press | insert | |
+|check | degree vote | 101,75 |
+
+-----
+3) test 'Degree vote' with three '30 cum laude' 
+
+!|fit.ActionFixture  |
+|start | fit_tests.VerifyDegreeVote|  |
+|check | degree vote | 101,75 |
+|enter | exam name | Model 1 |
+|enter | vote | 30 cum laude |
+|enter | cfu | 12 |
+|press | insert | |
+|check | degree vote | 105,29 |
+|enter | exam name | Model 2|
+|enter | vote | 30 cum laude |
+|enter | cfu | 6 |
+|press | insert | |
+|check | degree vote | 106,12 |
+|enter | exam name | Model 3 |
+|enter | vote | 30 cum laude |
+|enter | cfu | 10 |
+|press | insert | |
+|check | degree vote | 108 |

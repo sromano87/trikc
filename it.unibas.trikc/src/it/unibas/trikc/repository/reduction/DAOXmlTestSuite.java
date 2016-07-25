@@ -17,38 +17,37 @@ public class DAOXmlTestSuite implements IDAOTestSuite {
 	
 	@Override
 	public void save(TestSuite testSuite, String nameFile) throws XMLException {
-		
-		URL location = PageCoverage.class.getProtectionDomain().getCodeSource().getLocation();
-		StringBuilder path = new StringBuilder();
-		path.append(location.getPath());
-		path.append("storage");
-		
+		String path = System.getProperty("user.home"); 
+		path = path + "/.TRIKC/"; 
+		File dir = new File(path); 
+		if (!dir.exists()) {
+			dir.mkdirs(); 
+		}
 		Serializer serializer = new Persister(); 
-		//File result = new File("/storage/" + nameFile + ".xml"); 
-		File result = new File(path.toString()+"/"+ nameFile + ".xml");
-		logger.info("RISULTATO "+result.toString());
+		File result = new File(path + nameFile + ".xml");
+		
 		try {
 			serializer.write(testSuite, result);
 		} catch (Exception e) {
-			//e.printStackTrace();
 			throw new XMLException(e);
 		}
 	}
 
 	@Override
 	public TestSuite load(String nameFile) throws XMLException {
-		URL location = PageCoverage.class.getProtectionDomain().getCodeSource().getLocation();
-		StringBuilder path = new StringBuilder();
-		path.append(location.getPath());
-		path.append("storage");
+		String path = System.getProperty("user.home"); 
+		path = path + "/.TRIKC/";
+		File dir = new File(path); 
+		if (!dir.exists()) {
+			dir.mkdirs(); 
+		}
 		Serializer serializer = new Persister(); 
-		//File result = new File("./storage/" + nameFile + ".xml"); 
-		File result = new File(path.toString()+"/" + nameFile + ".xml"); 
+		File result = new File(path + nameFile + ".xml"); 
+		
 		TestSuite testSuite = new TestSuite(); 
 		try {
 			testSuite = serializer.read(TestSuite.class, result); 
 		} catch (Exception e) {
-			//e.printStackTrace();
 			throw new XMLException(e);
 		}
 		return testSuite;

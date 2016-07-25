@@ -6,6 +6,12 @@ import java.util.List;
 import it.unibas.trikc.modelEntity.Package;
 import it.unibas.trikc.modelEntity.method.IMethod;
 
+/**
+ * Interface IClass
+ *
+ * @author TeamDataLayer
+ */
+
 public interface IClass {
 	
 	public void setFullName(String name);

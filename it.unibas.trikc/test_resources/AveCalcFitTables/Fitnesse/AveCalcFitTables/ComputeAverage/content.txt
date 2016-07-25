@@ -1,0 +1,14 @@
+The average is computed each time an exam is added to the register. Precisely, the average is a Weighted arithmetic mean (see http://en.wikipedia.org/wiki/Weighted_mean) where the weights are the CFU. A negative vote is not counted, that is, it is not considered in the calculation of the average.
+
+!include PopulateDatabase
+----
+1) verify average
+
+!|fit.ActionFixture  |
+|start | fit_tests.VerifyAverage|  |
+|check | average | 24,43 |
+|enter | exam name | Web services |
+|enter | vote | 30 |
+|enter | cfu | 10 |
+|press | insert | |
+|check | average | 25,89 |

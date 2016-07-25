@@ -36,6 +36,7 @@ public class StrategyJunit4 extends AbstractStrategyJunit{
 					String nameTestMethod = testClass.getName() + "." + methods[cm].getName();	
 					TestCase testCase = this.findTestCase(nameTestMethod);
 					Request request = Request.method(testClassToCoverage, methods[cm].getName());
+					//System.out.println("--- Method " + methods[cm].getName());
 					new JUnitCore().run(request);
 						
 					CoverageBuilder coverageBuilder = super.getJacocoServices().collectAnalysis(super.getClazz().getFullName());

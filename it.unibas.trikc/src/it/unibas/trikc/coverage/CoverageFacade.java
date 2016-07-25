@@ -26,22 +26,25 @@ public class CoverageFacade {
 	 *            
 	 * @throws java.lang.Exception
 	 */
-	public void runCoverage(String binPath, String testSuite) throws Exception {
-	
+	public void runCoverage(String binPath, String testSuite, String testPath, String libPath) throws Exception {
+		
 		ICoverage coverage = new Coverage();
 		
 		Loader loader = Loader.getInstance();
 		loader.setBinPath(binPath);
 		loader.setTestSuiteName(testSuite);
+		loader.setTestPath(testPath);
+		loader.setLibPath(libPath);
 		loader.load(coverage);
 		
 		this.coverage = coverage;
 		this.coverage.executeCoverage();
-
+		
+		System.out.println("TEST SUITE: " + this.coverage.getTestSuite().toString());
+		
 		IDAOTestSuite dao = new DAOXmlTestSuite();
 		dao.save(coverage.getTestSuite(), "testSuiteCoverage_" + testSuite);
-		System.out.println(coverage.getTestSuite().toString());
-
+		
 	}
 
 	public ICoverage getCoverage() {

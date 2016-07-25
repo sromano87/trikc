@@ -51,8 +51,8 @@
                id="it.unibas.trikc.toolbars.sampleToolbar">
             <command
                   commandId="it.unibas.trikc.commands.sampleCommand"
-                  icon="icons/sample.gif"
-                  tooltip="Say hello world"
+                  icon="icons/logoUnibas.jpg"
+                  tooltip="Make a Trikc"
                   id="it.unibas.trikc.toolbars.sampleCommand">
             </command>
          </toolbar>

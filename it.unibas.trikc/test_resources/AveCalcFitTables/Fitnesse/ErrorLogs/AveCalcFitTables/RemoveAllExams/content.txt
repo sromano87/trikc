@@ -1,0 +1,22 @@
+|'''Date: '''|!-12:18:15 PM (CEST) on sabato, maggio 5, 2007-!|
+|'''Command: '''|!-java -cp C:/Programmi/Eclipse/Eclipse-Extensions/HibernateTools-3.2.0.beta6a/eclipse/plugins/com.bandxi.fitnesse.launcher_1.0.2/lib/fitnesse.jar;D:/eclipse/eclipse/AveCalcDef/bin;C:/Programmi/Eclipse/Eclipse-Extensions/HibernateTools-3.2.0.beta6a/eclipse/plugins/com.bandxi.fitnesse.launcher_1.0.2/lib/fitlibrary.jar fit.FitServer localhost 9083 8-!|
+|'''Exit code: '''|!-0-!|
+|'''Time elapsed: '''|!-2.453 seconds-!|
+----'''Standard Output:'''
+{{{Software 1 12 20
+Software 1 12 20
+Software 2 6 24
+Software 1 12 20
+Software 2 6 24
+DB 10 30
+Software 1 12 20
+Software 2 6 24
+DB 10 30
+UML 6 15
+Software 1 12 20
+Software 2 6 24
+DB 10 30
+Software 1 12 20
+Software 2 6 24
+DB 10 30
+}}}

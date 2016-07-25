@@ -137,11 +137,13 @@ public class PageClustering extends Composite {
 			}
 		});
 
+		/*
 		comboStrategy.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				buttonLoad.setEnabled(false);
 			}
 		});
+		*/
 
 		buttonClustering.addListener(SWT.Selection, new Listener() {
 
@@ -216,10 +218,10 @@ public class PageClustering extends Composite {
 
 	public static void existingClustering() {
 		listaFile = new ArrayList<File>();
-		URL location = PageClustering.class.getProtectionDomain().getCodeSource().getLocation();
-		StringBuilder path = new StringBuilder();
-		path.append(location.getPath());
-		path.append("storage");
+		
+		String path = System.getProperty("user.home"); 
+		path = path + "/.TRIKC/";
+		
 		File directoryStorage = new File(path.toString());
 		File[] listaFiles = directoryStorage.listFiles();
 		if (listaFiles != null) {

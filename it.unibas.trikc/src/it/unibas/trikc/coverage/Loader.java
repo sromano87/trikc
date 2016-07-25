@@ -2,7 +2,9 @@ package it.unibas.trikc.coverage;
 
 import java.io.File;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import it.unibas.trikc.modelEntity.Package;
@@ -24,6 +26,8 @@ public class Loader {
 
 	private String binPath;
 	private String testSuiteName;
+	private String testPath;
+	private String libPath;
 	private Map<String, Package> mapClassesPackages = new HashMap<String,Package>();
 	
 	private static Loader singleton = new Loader();
@@ -35,6 +39,22 @@ public class Loader {
 	 * 					the unique instance of the class*/
 	public static Loader getInstance() {
 		return singleton;
+	}
+	
+	public String getTestPath(){
+		return testPath;
+	}
+	
+	public String getLibPath(){
+		return libPath;
+	}
+	
+	public void setTestPath(String testPath){
+		this.testPath = testPath;	
+	}
+	
+	public void setLibPath(String libPath){
+		this.libPath = libPath;
 	}
 	
 	/**
@@ -114,7 +134,7 @@ public class Loader {
 	    for (File file : allFile) {
 	    	if (file.isFile()) {
 	    		String[] tmp = file.getAbsolutePath().split("/");
-		    	if(tmp[tmp.length-1].contains("class")) {
+		    	if(tmp[tmp.length-1].contains(".class")) {
 		    		String fileTemp = createStringFileTemp(file);
 		    		String clazzName = createClassName(fileTemp);
 		    	    String packageName = createPackageName(clazzName, fileTemp);
@@ -123,7 +143,6 @@ public class Loader {
 			    		Package pakage = findClassesPackageByKey(packageName);
 			    		if(mapClassesPackages.isEmpty()) {
 			    			sut.setFullName(packageName);
-			    			System.out.println("---" + sut.getFullName());
 			    		}
 			    		if(pakage == null) {
 			    			pakage = createPackage(packageName);
@@ -131,7 +150,6 @@ public class Loader {
 			    			addClassToPackage(pakage, clazzName);
 			    			pakage.setMySut(sut);
 			    			sut.addPackage(pakage);
-			    			System.out.println("---" + sut.getFullName());
 				    	} else {
 				    		addClassToPackage(pakage, clazzName);
 				    	}
@@ -143,7 +161,7 @@ public class Loader {
 	        }
 	    }
 	    if (sut.getFullName() == null) {
-	    	sut.setFullName("nomeNonIndividuato");
+	    	sut.setFullName("nameNotFound");
 	    }
 	
 	}
@@ -220,18 +238,40 @@ public class Loader {
 		}
 		return false;
 	}
+	
+	public List<URL> findLibraries() throws Exception{
+		File directory = new File(libPath);
+	    File[] allFile = directory.listFiles();
+	    List<URL> urlsResult = new ArrayList<URL>();
+	    for (File file : allFile) {
+	    	if (file.isFile()) {
+	    		String[] tmp = file.getAbsolutePath().split("/");
+		    	if(tmp[tmp.length-1].contains("jar")) {
+		    		urlsResult.add(file.toURI().toURL());
+		    	}
+	    	}
+	    }
+	    return urlsResult;
+	}
 
 	/**Initializes the {@link MemoryClassLoader} whit the URL of the binPath*/
 	public MemoryClassLoader initializeURLClassLoader() throws Exception {
 		File file = new File(binPath);
-		URL url = file.toURI().toURL();
-		URL[] urls = {url};
+		URL urlFile = file.toURI().toURL();
+		List<URL> urlsLib = new ArrayList<URL>();
+		if (libPath != null) {
+			urlsLib = findLibraries();	
+		}
+		if (testPath != null) {
+			File testFile = new File(testPath);
+			URL urlTest = testFile.toURI().toURL();
+			urlsLib.add(urlTest);
+		}
+		urlsLib.add(urlFile);
+		URL[] urls = new URL[urlsLib.size()];
+		urlsLib.toArray(urls);
 		MemoryClassLoader memoryClassLoader = new MemoryClassLoader(urls, getClass().getClassLoader());
 		return memoryClassLoader;
 	}
 	
-	/**Don't use this method*/
-	public void reset() {
-		singleton = new Loader();
-	}
 }

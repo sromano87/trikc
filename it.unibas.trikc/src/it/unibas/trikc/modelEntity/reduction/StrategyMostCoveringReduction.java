@@ -9,8 +9,20 @@ import it.unibas.trikc.modelEntity.Clusters;
 import it.unibas.trikc.modelEntity.TestSuite;
 import it.unibas.trikc.modelEntity.method.TestCase;
 
+
+/**
+ * The MostCoveringReduction class is a public class that provides methods for generating 
+ * reduced Test-Suites.
+ * It implements the public interface IStrategyReduction.
+ * */
+
 public class StrategyMostCoveringReduction implements IStrategyReduction{
 
+
+	/**
+	 * This method creates and returns a new reduced Test-Suite from a map of clusters (posta in input).
+	 * @param clusters
+	 * */
 	@Override
 	public TestSuite reduceTestSuite(Clusters clusters) {
 		Map<String, Cluster> clustersMap = clusters.getClusters();
@@ -24,7 +36,11 @@ public class StrategyMostCoveringReduction implements IStrategyReduction{
 		return testSuiteReduced;
 	}
 
-	
+	/**
+	 * This method computes the most coverage of Test-Case of a cluster. 
+	 * It returns a list of Test-Case.
+	 * @param cluster
+	 * */
 	private List<TestCase> computeMostCoveringTestCase(Cluster cluster) {
 		List<TestCase> listOfTestCaseMostCovering = new ArrayList<>();
 		int lineCovered = 0;

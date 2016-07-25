@@ -1,0 +1,199 @@
+|'''Date: '''|!-3:37:56 PM (CEST) on sabato, maggio 5, 2007-!|
+|'''Command: '''|!-java -cp C:/Programmi/Eclipse/Eclipse-Extensions/HibernateTools-3.2.0.beta6a/eclipse/plugins/com.bandxi.fitnesse.launcher_1.0.2/lib/fitnesse.jar;D:/eclipse/eclipse/AveCalcDef/bin;C:/Programmi/Eclipse/Eclipse-Extensions/HibernateTools-3.2.0.beta6a/eclipse/plugins/com.bandxi.fitnesse.launcher_1.0.2/lib/fitlibrary.jar fit.FitServer localhost 9083 8-!|
+|'''Exit code: '''|!-0-!|
+|'''Time elapsed: '''|!-2.547 seconds-!|
+----'''Standard Output:'''
+{{{Software 1 12 20
+Software 1 12 20
+Software 2 6 24
+Software 1 12 20
+Software 2 6 24
+DB 10 30
+Software 1 12 20
+Software 2 6 24
+DB 10 30
+UML 6 15
+Software 1 12 20
+Software 2 6 24
+DB 10 30
+Software 1 12 20
+Software 2 6 24
+DB 10 30
+chiama
+software 3 1 20
+esce
+Software 1 12 20
+Software 2 6 24
+DB 10 30
+software 3 1 20
+chiama
+software 4 1 24
+esce
+Software 1 12 20
+Software 2 6 24
+DB 10 30
+software 3 1 20
+software 4 1 24
+chiama
+DB 1 1 30
+esce
+Software 1 12 20
+Software 2 6 24
+DB 10 30
+software 3 1 20
+software 4 1 24
+DB 1 1 30
+chiama
+software 5 1 20
+esce
+Software 1 12 20
+Software 2 6 24
+DB 10 30
+software 3 1 20
+software 4 1 24
+DB 1 1 30
+software 5 1 20
+chiama
+software 6 1 24
+esce
+Software 1 12 20
+Software 2 6 24
+DB 10 30
+software 3 1 20
+software 4 1 24
+DB 1 1 30
+software 5 1 20
+software 6 1 24
+chiama
+DB 2 1 30
+esce
+Software 1 12 20
+Software 2 6 24
+DB 10 30
+software 3 1 20
+software 4 1 24
+DB 1 1 30
+software 5 1 20
+software 6 1 24
+DB 2 1 30
+chiama
+software 7 1 20
+esce
+Software 1 12 20
+Software 2 6 24
+DB 10 30
+software 3 1 20
+software 4 1 24
+DB 1 1 30
+software 5 1 20
+software 6 1 24
+DB 2 1 30
+software 7 1 20
+chiama
+software 8 1 24
+esce
+Software 1 12 20
+Software 2 6 24
+DB 10 30
+software 3 1 20
+software 4 1 24
+DB 1 1 30
+software 5 1 20
+software 6 1 24
+DB 2 1 30
+software 7 1 20
+software 8 1 24
+chiama
+DB 3 2 30
+esce
+Software 1 12 20
+Software 2 6 24
+DB 10 30
+software 3 1 20
+software 4 1 24
+DB 1 1 30
+software 5 1 20
+software 6 1 24
+DB 2 1 30
+software 7 1 20
+software 8 1 24
+DB 3 2 30
+Software 1 12 20
+Software 2 6 24
+DB 10 30
+software 3 1 20
+software 4 1 24
+DB 1 1 30
+software 5 1 20
+software 6 1 24
+DB 2 1 30
+software 7 1 20
+software 8 1 24
+DB 3 2 30
+chiama
+SOA 10 30
+esce
+Software 1 12 20
+Software 2 6 24
+DB 10 30
+software 3 1 20
+software 4 1 24
+DB 1 1 30
+software 5 1 20
+software 6 1 24
+DB 2 1 30
+software 7 1 20
+software 8 1 24
+DB 3 2 30
+SOA 10 30
+chiama
+Testing 20 30
+esce
+Software 1 12 20
+Software 2 6 24
+DB 10 30
+software 3 1 20
+software 4 1 24
+DB 1 1 30
+software 5 1 20
+software 6 1 24
+DB 2 1 30
+software 7 1 20
+software 8 1 24
+DB 3 2 30
+SOA 10 30
+Testing 20 30
+chiama
+Web Services 30 30
+esce
+Software 1 12 20
+Software 2 6 24
+DB 10 30
+software 3 1 20
+software 4 1 24
+DB 1 1 30
+software 5 1 20
+software 6 1 24
+DB 2 1 30
+software 7 1 20
+software 8 1 24
+DB 3 2 30
+SOA 10 30
+Testing 20 30
+Web Services 30 30
+Software 1 12 20
+Software 2 6 24
+DB 10 30
+software 3 1 20
+software 4 1 24
+DB 1 1 30
+software 5 1 20
+software 6 1 24
+DB 2 1 30
+software 7 1 20
+software 8 1 24
+DB 3 2 30
+SOA 10 30
+Testing 20 30
+Web Services 30 30
+}}}

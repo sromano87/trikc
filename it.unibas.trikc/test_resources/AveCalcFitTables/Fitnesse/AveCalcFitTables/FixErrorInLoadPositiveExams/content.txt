@@ -1,0 +1,22 @@
+There is an error in LoadPositiveExams. This computation should load only positive exams from the database (db.xml). Fix the error.
+
+!include PopulateDatabase
+----
+1) Insert a new exam
+
+!|fit.ActionFixture  |
+|start | fit_tests.AddExam|  |
+|check |number of exams | 4 |
+|enter | exam name | MDA |
+|enter | cfu | 6 |
+|enter | vote | 17 |
+|press | insert | |
+|check |number of exams | 5 |
+
+1) Load only positive exams 
+
+!|fit_tests.LoadPositiveExams  |
+|name       | cfu | vote |
+|Software   |12   | 20   |
+|SEI        |6    | 24   |
+|DB         |10   | 30   |

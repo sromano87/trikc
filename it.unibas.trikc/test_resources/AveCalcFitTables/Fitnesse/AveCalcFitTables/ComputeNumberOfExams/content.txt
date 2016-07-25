@@ -1,0 +1,19 @@
+The 'the total number of exams' is updated each time an exam is added to the register. This value gives the sum of all the exams that are in the register.
+
+!include PopulateDatabase
+-----
+1) number of exams at the starting point
+
+!|fit.ActionFixture  |
+|start | fit_tests.AddExam|  |
+|check |number of exams | 4 |
+
+
+2) Verify 'the total number of exams' 
+
+!|fit_tests.VerifyNumberOfExams|
+|name         |cfu | vote |exams inserted()|
+|Compilers II    |6   |30    |5|
+|Web testing II  |6   |20    |6|
+|MDA             |12  |22    |7|
+|UML II          |6   |21    |8|

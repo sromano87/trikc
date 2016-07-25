@@ -14,35 +14,38 @@ public class DAOXmlClusters implements IDAOClusters {
 
 	@Override
 	public void save(Clusters clusters, String nameFile) throws XMLException{
-		URL location = PageCoverage.class.getProtectionDomain().getCodeSource().getLocation();
-		StringBuilder path = new StringBuilder();
-		path.append(location.getPath());
-		path.append("storage");
+		String path = System.getProperty("user.home"); 
+		path = path + "/.TRIKC/"; 
+		File dir = new File(path); 
+		
+		if (!dir.exists()) {
+			dir.mkdirs(); 
+		}
 		Serializer serializer = new Persister(); 
-//		File result = new File("/storage/" + nameFile + ".xml"); 
-		File result = new File(path.toString()+"/" + nameFile + ".xml"); 
+		File result = new File(path + nameFile + ".xml"); 
+		
 		try {
 			serializer.write(clusters, result);
 		} catch (Exception e) {
-			//e.printStackTrace();
 			throw new XMLException(e);
 		}
 	}
 
 	@Override
 	public Clusters load(String nameFile) throws XMLException{
-		URL location = PageCoverage.class.getProtectionDomain().getCodeSource().getLocation();
-		StringBuilder path = new StringBuilder();
-		path.append(location.getPath());
-		path.append("storage");
+		String path = System.getProperty("user.home"); 
+		path = path + "/.TRIKC/";
+		File dir = new File(path); 
+		if (!dir.exists()) {
+			dir.mkdirs(); 
+		}
 		Serializer serializer = new Persister(); 
-		//File result = new File("/storage/" + nameFile + ".xml"); 
-		File result = new File(path.toString()+"/" + nameFile + ".xml"); 
+		File result = new File(path + nameFile + ".xml"); 
+		
 		Clusters clusters = new Clusters(); 
 		try {
 			clusters = serializer.read(Clusters.class, result); 
 		} catch (Exception e) {
-			//e.printStackTrace();
 			throw new XMLException(e);
 		}
 		return clusters;

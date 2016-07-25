@@ -31,11 +31,12 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 
 public class PageCoverage extends Composite {
+	
 	private static Logger logger = Logger.getLogger(PageCoverage.class.getName());
 	public static Combo comboCoverage;
 	private Button btnCoverage;
 	private static Button buttonLoad;
-	private TestSuite testSuite = null;
+	private TestSuite testSuite = new TestSuite();
 	private static List<File> listaFile  = null;
 
 	/**
@@ -62,8 +63,14 @@ public class PageCoverage extends Composite {
 				Shell shell = getShell();
 				CoverageFacade cf = new CoverageFacade();
 				try {
+					//System.out.println("---Prima di runCoverage");
 					cf.runCoverage((String) Modello.getInstance().getBean(Constants.DIRECTORY_BIN),
-							(String) Modello.getInstance().getBean(Constants.TEST_SUITE));
+							(String) Modello.getInstance().getBean(Constants.TEST_SUITE),
+							(String) Modello.getInstance().getBean(Constants.DIRECTORY_TEST),
+							(String) Modello.getInstance().getBean(Constants.DIRECTORY_LIB));
+					
+					//System.out.println("---Dopo di runCoverage");
+					//System.out.println("Test Suite: \n" + cf.getCoverage().getTestSuite().toString());
 					testSuite = cf.getCoverage().getTestSuite();
 					if (testSuite != null) {
 						Modello.getInstance().putBean(Constants.TEST_SUITE_OBJ, testSuite);
@@ -124,17 +131,17 @@ public class PageCoverage extends Composite {
 
 	public static void existingCoverage() {
 		listaFile = new ArrayList<File>();
-		URL location = PageCoverage.class.getProtectionDomain().getCodeSource().getLocation();
-		StringBuilder path = new StringBuilder();
-		path.append(location.getPath());
-		path.append("storage");
+		
+		String path = System.getProperty("user.home"); 
+		path = path + "/.TRIKC/";
+		
 		File directoryStorage = new File(path.toString());
 		File[] listaFiles = directoryStorage.listFiles();
 		
 		if (listaFiles != null) {
 			for (int i = 0; i < listaFiles.length; i++) {
-				System.out.print("--- " + listaFiles[i].getName() + "\n"); 
-				System.out.println("---> " + (String)Modello.getInstance().getBean(Constants.TEST_SUITE) + "\n");
+				//System.out.print("--- " + listaFiles[i].getName() + "\n"); 
+				//System.out.println("---> " + (String)Modello.getInstance().getBean(Constants.TEST_SUITE) + "\n");
 					if (listaFiles[i].getName().contains("testSuiteCoverage_"+(String)Modello.getInstance().getBean(Constants.TEST_SUITE)) 
 							/*&& !verifyExistence(listaFiles[i])*/) {
 					listaFile.add(listaFiles[i]);
@@ -156,10 +163,10 @@ public class PageCoverage extends Composite {
 	
 	public static boolean verifyExistence(File file) {
 		String[] comboItems = comboCoverage.getItems();
-		logger.info("dimensione combo "+comboItems.length);
+		//logger.info("dimensione combo "+comboItems.length);
 		int count =0;
 		for(int j=0; j<comboItems.length; j++) {
-			logger.info("fileName "+file.getName()+" comboItem "+comboItems[j]+ "equals? "+file.getName().equals(comboItems[j]));
+			//logger.info("fileName "+file.getName()+" comboItem "+comboItems[j]+ "equals? "+file.getName().equals(comboItems[j]));
 			if (file.getName().substring(0, file.getName().length()-4).equals(comboItems[j])) {
 				count++;
 			}

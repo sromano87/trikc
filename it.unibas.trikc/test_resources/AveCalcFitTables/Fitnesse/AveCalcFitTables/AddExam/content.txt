@@ -1,0 +1,51 @@
+A student can add a new exam to the register. An exam is composed of a name, CFU (i.e., a number that represent the university credit of the exam) and an optional vote. The name is unique, CFU is a positive number (>=0) and the vote, if inserted, is a number included between 0 and 30 (the vote can be also 0 or 30). A vote < 18 is negative (i.e., the exam is not passed) while >= 18 is positive (i.e., the exam is passed). An exam can be inserted also without the vote; it can be inserted later. 'Laude' can be added only when the vote is 30.
+
+!include PopulateDatabase
+----
+1) insert 2 "complete" exams
+
+!|fit.ActionFixture  |
+|start | fit_tests.AddExam|  |
+|check |number of exams | 4 |
+|enter | exam name | MDA |
+|enter | cfu | 6 |
+|enter | vote | 12 |
+|press | insert | |
+|check |number of exams | 5 |
+|check | contain exam name | true |
+|enter | exam name | Testing|
+|enter | cfu | 6 |
+|enter | vote | 26 |
+|press | insert | |
+|check |number of exams | 6 |
+|check | contain exam name | true |
+
+----
+2) insert 2 exams without the vote
+
+!|fit.ActionFixture  |
+|start | fit_tests.AddExam|  |
+|check |number of exams | 6 |
+|enter | exam name | Web applications|
+|enter | cfu | 6 |
+|press | insert | |
+|check |number of exams | 7 |
+|check | contain exam name | true |
+|enter | exam name | Models |
+|enter | cfu | 6 |
+|press | insert | |
+|check |number of exams | 8 |
+|check | contain exam name | true |
+
+----
+3) try to insert an exam with vote > 30
+
+!|fit.ActionFixture  |
+|start | fit_tests.AddExam|  |
+|check |number of exams | 8 |
+|enter | exam name | software 1|
+|enter | cfu | 6 |
+|enter | vote | 34 |
+|press | insert | |
+|check |number of exams | 8 |
+

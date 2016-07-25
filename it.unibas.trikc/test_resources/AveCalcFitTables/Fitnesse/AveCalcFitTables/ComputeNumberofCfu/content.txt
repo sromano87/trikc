@@ -1,0 +1,12 @@
+The 'total number of CFU' is updated each time an exam is added to the register. This value is the sum of all positive exams that are in the register.
+
+!include PopulateDatabase
+----
+1) Verify 'total number of CFU' 
+
+!|fit_tests.VerifyCFU|
+|name                |cfu | vote |total cfu()|
+|Compilers           |6   |30    |34|
+|Software 2          |6   |20    |40|
+|Reverse Engineering |12  |28    |52|
+|MDA                 |3   |10    |52|

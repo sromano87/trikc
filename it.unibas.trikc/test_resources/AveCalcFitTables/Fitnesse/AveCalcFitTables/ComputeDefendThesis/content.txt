@@ -1,0 +1,78 @@
+A student can defend his/her thesis only if he/she passed at least 12 exams (An exam is passed only if the vote is >= 18) and the 'Total number of CFU' is >= 90.
+
+!include PopulateDatabase
+-----
+1) Number of exams is not sufficient
+
+!|fit.ActionFixture|
+|start | fit_tests.ComputeDefendeThesis|  |
+|check | exams inserted | 4 |
+|check | total cfu | 28 |
+|check | defend thesis | false |
+
+-----
+2) Number of exams sufficient but 'Total number of CFU' is < 90
+
+!|fit.ActionFixture|
+|start | fit_tests.ComputeDefendeThesis|  |
+|enter | exam name | software 3|
+|enter | vote | 20 |
+|enter | cfu | 1 |
+|press | insert | |
+|enter | exam name | software 4|
+|enter | vote | 24 |
+|enter | cfu | 1 |
+|press | insert | |
+|enter | exam name | DB 1|
+|enter | vote | 30 |
+|enter | cfu | 1 |
+|press | insert | |
+|enter | exam name | software 5|
+|enter | vote | 20 |
+|enter | cfu | 1 |
+|press | insert | |
+|enter | exam name | software 6|
+|enter | vote | 24 |
+|enter | cfu | 1 |
+|press | insert | |
+|enter | exam name | DB 2|
+|enter | vote | 30 |
+|enter | cfu | 1 |
+|press | insert | |
+|enter | exam name | software 7|
+|enter | vote | 20 |
+|enter | cfu | 1 |
+|press | insert | |
+|enter | exam name | software 8|
+|enter | vote | 24 |
+|enter | cfu | 1 |
+|press | insert | |
+|enter | exam name | DB 3|
+|enter | vote | 30 |
+|enter | cfu | 2 |
+|press | insert | |
+|check | total cfu | 38 |
+|check | exams inserted | 13 |
+|check | defend thesis | false |
+
+-----
+3) number of exams sufficient and 'Total number of CFU' > 90
+
+!|fit.ActionFixture|
+|start | fit_tests.ComputeDefendeThesis|  |
+|enter | exam name | SOA |
+|check | exams inserted | 13 |
+|enter | vote | 30 |
+|enter | cfu | 10 |
+|press | insert | |
+|enter | exam name | Testing |
+|enter | vote | 30 |
+|enter | cfu | 20 |
+|press | insert | |
+|enter | exam name | Web Services |
+|enter | vote | 30 |
+|enter | cfu | 30 |
+|press | insert | |
+|check | total cfu | 98 |
+|check | exams inserted | 16 |
+|check | defend thesis | true |

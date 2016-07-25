@@ -2,6 +2,10 @@ package it.unibas.trikc.modelEntity.dissimilarity;
 
 import it.unibas.trikc.Constants;
 
+
+/**
+ * This class builds the criterion of similarity selected by the user.
+ * */
 public class DissimilarityFactory {
 
 	private static DissimilarityFactory singleton = new DissimilarityFactory();
@@ -15,6 +19,13 @@ public class DissimilarityFactory {
 		
 	}
 	
+	
+		
+	/**
+	 * This method returns the dissimilarity strategy chosen by the user.
+	 * It takes as input a string value.
+	 * @param type
+	 * */
 	public IStrategyDissimilarity getDissimilarity(String type){
 		if(type.trim().equals(Constants.STRING_KERNEL_DISSIMILARITY)){
 			strategy = new StrategyStringKernelDissimilarity();

@@ -15,6 +15,17 @@ import it.unibas.trikc.repository.dissimilarity.DAOMockDissimilarityMatrix;
 
 public class StrategyHierarchicalClustering implements IStrategyClustering {
 	
+	
+	/**
+	 * This method create a Clusters with Hierarchical cluster algorithm.
+	 * Input are a Dissimilarity Matrix, a level and a strategy linkage.
+	 * A level is a double from 0 to 1. 
+	 * Strategy linkage has three choice, Complete linkage strategy, Single linkage strategy and Average linkage strategy
+	 *@return Clusters 
+	 * 
+	 * 
+	 * 
+	 */
 	@Override
 	public Clusters clusterTestCases(DissimilarityMatrix matrix, double level, String linkageStr) {
 		

@@ -65,6 +65,8 @@ public class JacocoServices {
 		this.runtimeData = new RuntimeData();
 		this.runtime.startup(runtimeData);
 		
+		//String classNameInstrumented = className + "Instrumented";
+		//String testClassNameInstrumented = testClassName + "Instrumented";
 		memoryClassLoader.addDefinition(className, instrumented);
 		memoryClassLoader.addDefinition(testClassName, instrumentedTest);
 		Class<?> testClassToCoverage = memoryClassLoader.loadClass(testClassName);

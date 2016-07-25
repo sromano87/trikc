@@ -1,0 +1,12 @@
+A student can remove all the exams from the database.
+
+!include PopulateDatabase
+
+----
+1) remove all exams
+
+!|fit.ActionFixture  |
+|start | fit_tests.RemoveAllExams |  |
+|check | number of exams | 4 |
+|press | remove all exams|   |
+|check | number of exams | 0 |

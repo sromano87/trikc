@@ -116,7 +116,7 @@ public class Coverage implements ICoverage{
 					this.strategy.setTestSuiteClass(testSuiteClass);
 					this.testSuite = strategy.executeCoverage();
 					
-				}else {
+				} else {
 					this.strategy = new StrategyJunit4();
 					this.strategy.setClazz(clazz);
 					this.strategy.setJacocoServices(jacocoServices);
