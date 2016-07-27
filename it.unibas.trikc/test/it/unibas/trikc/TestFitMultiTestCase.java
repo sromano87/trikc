@@ -2,6 +2,8 @@ package it.unibas.trikc;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.List;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,6 +16,7 @@ import it.unibas.trikc.modelEntity.TestSuite;
 import it.unibas.trikc.modelEntity.clustering.ClusteringFactory;
 import it.unibas.trikc.modelEntity.dissimilarity.DissimilarityFactory;
 import it.unibas.trikc.modelEntity.dissimilarity.IStrategyDissimilarity;
+import it.unibas.trikc.modelEntity.method.TestCase;
 import it.unibas.trikc.modelEntity.reduction.IStrategyReduction;
 import it.unibas.trikc.modelEntity.reduction.ReducingFactory;
 import it.unibas.trikc.repository.XMLException;
@@ -67,6 +70,15 @@ public class TestFitMultiTestCase {
 		}
 		this.coverage = coverageFacade.getCoverage();
 		Assert.assertTrue("Coverage: ",this.coverage.getTestSuite().getFullName().equals("changeReqs_junit.All_tests"));
+		List<TestCase> testCases = coverageFacade.getCoverage().getTestSuite().getTestCases();
+		for(TestCase tc : testCases){
+			if(tc.getFullName().equals("changeReqs_junit.Test_ChangeReqs1.testOnlyPositive")) {
+				Assert.assertEquals(391, tc.getCoveredLines().size());		
+			} 
+			if(tc.getFullName().equals("changeReqs_junit.Test_ChangeReqs3.testDegreeVote3exams")) {
+				Assert.assertEquals(388, tc.getCoveredLines().size()); 
+			} 
+		}
 	}
 
 	@Test
@@ -76,12 +88,12 @@ public class TestFitMultiTestCase {
 		IStrategyDissimilarity skd = df.getDissimilarity(Constants.STRING_KERNEL_DISSIMILARITY);
 		
 		try {
-			TestSuite ts = daoTs.loadForTest("testSuiteCoverage_com.google.debugging.sourcemap.MyTestSuite");
+			TestSuite ts = daoTs.loadForTest("testSuiteCoverage_changeReqs_junit.All_tests_AveCalcFitTables");
 			dm = skd.computeDissimilarity(ts);
 		} catch (XMLException e1) {
 			e1.printStackTrace();
 		} 
-		assertEquals(6, dm.getSize());
+		assertEquals(25, dm.getSize());
 		assertEquals(Double.valueOf(0), dm.getValueAt(0, 0));
 		assertEquals(Double.valueOf(0), dm.getValueAt(1, 1));
 		assertEquals(Double.valueOf(0), dm.getValueAt(4, 4));

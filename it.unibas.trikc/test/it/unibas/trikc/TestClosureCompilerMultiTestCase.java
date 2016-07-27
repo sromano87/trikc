@@ -2,6 +2,8 @@ package it.unibas.trikc;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.List;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,6 +15,7 @@ import it.unibas.trikc.modelEntity.TestSuite;
 import it.unibas.trikc.modelEntity.clustering.ClusteringFactory;
 import it.unibas.trikc.modelEntity.dissimilarity.DissimilarityFactory;
 import it.unibas.trikc.modelEntity.dissimilarity.IStrategyDissimilarity;
+import it.unibas.trikc.modelEntity.method.TestCase;
 import it.unibas.trikc.modelEntity.reduction.IStrategyReduction;
 import it.unibas.trikc.modelEntity.reduction.ReducingFactory;
 import it.unibas.trikc.repository.XMLException;
@@ -59,11 +62,19 @@ public class TestClosureCompilerMultiTestCase {
 		CoverageFacade coverageFacade = new CoverageFacade();
 		try {
 			coverageFacade.runCoverage(binPath, testSuiteName, testPath, libPath);
-			System.out.println("CoverageDone");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		Assert.assertTrue("Coverage: ",coverageFacade.getCoverage().getTestSuite().getFullName().equals("com.google.debugging.sourcemap.MyTestSuite"));
+		List<TestCase> testCases = coverageFacade.getCoverage().getTestSuite().getTestCases();
+		for(TestCase tc : testCases){
+			if(tc.getFullName().equals("com.google.debugging.sourcemap.Base64Test.testBase64")) {
+				Assert.assertTrue(tc.getCoveredLines().size() == 8);		
+			} 
+			if(tc.getFullName().equals("com.google.debugging.sourcemap.SourceMapConsumerV3Test.testMap")) {
+				Assert.assertTrue(tc.getCoveredLines().size() == 480);
+			} 
+		}
 	}
 	
 	@Test

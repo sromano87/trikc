@@ -119,7 +119,7 @@ public class TestClosureCompiler {
 			daoTs.save(this.testSuiteLevel1, "Reduction_com.google.debugging.sourcemap.MyTestSuite_ClosureCompiler_1");
 
 		}catch(XMLException e) {
-			
+			e.printStackTrace();
 		}
 		System.out.println("-------OriginalTestSuite-------\n");
 		

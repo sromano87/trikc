@@ -120,7 +120,7 @@ public class TestFit {
 			daoTs.save(this.testSuiteLevel1, "Reduction_changeReqs_junit.All_tests_AveCalcFitTables_1");
 
 		}catch(XMLException e) {
-			
+			e.printStackTrace();
 		}
 		System.out.println("-------OriginalTestSuite-------\n");
 		
