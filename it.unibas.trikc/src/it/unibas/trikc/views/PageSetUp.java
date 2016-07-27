@@ -295,7 +295,8 @@ public class PageSetUp extends Composite {
 					sb.append( appoggio + "/");
 				}}
 			} catch (FileNotFoundException e1) {
-					return "c:/";
+				System.out.println("Eccoci");
+					return System.getProperty("user.home");
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -319,7 +320,7 @@ public class PageSetUp extends Composite {
 						}
 					}
 			} catch (FileNotFoundException e1) {
-					return "/Users";
+				return System.getProperty("user.home");
 			} catch (IOException e) {
 				e.printStackTrace();
 			} 
