@@ -127,13 +127,10 @@ public class TestFitMultiTestCase {
 			ReducingFactory rd = ReducingFactory.getInstance();
 			IStrategyReduction mcr = rd.getReduction(Constants.MOST_COVERING_REDUCTION);
 			TestSuite ts = mcr.reduceTestSuite(clusters);
-
 			assertEquals(10, ts.getTestCases().size());
-			
 		} catch (XMLException e) {
 			e.printStackTrace();
 		}
-		
 	}
 	
 	@Test
