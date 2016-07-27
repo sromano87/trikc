@@ -1,8 +1,5 @@
 package it.unibas.trikc;
 
-import static org.junit.Assert.assertEquals;
-
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -11,16 +8,16 @@ import it.unibas.trikc.coverage.ICoverage;
 import it.unibas.trikc.modelEntity.Clusters;
 import it.unibas.trikc.modelEntity.DissimilarityMatrix;
 import it.unibas.trikc.modelEntity.TestSuite;
+import it.unibas.trikc.modelEntity.clustering.ClusteringFactory;
 import it.unibas.trikc.modelEntity.dissimilarity.DissimilarityFactory;
 import it.unibas.trikc.modelEntity.dissimilarity.IStrategyDissimilarity;
 import it.unibas.trikc.modelEntity.reduction.IStrategyReduction;
 import it.unibas.trikc.modelEntity.reduction.ReducingFactory;
 import it.unibas.trikc.repository.XMLException;
-import it.unibas.trikc.repository.clusters.DAOMockClusters;
+import it.unibas.trikc.repository.clusters.DAOXmlClusters;
 import it.unibas.trikc.repository.clusters.IDAOClusters;
-import it.unibas.trikc.repository.dissimilarity.DAOMockDissimilarityMatrix;
+import it.unibas.trikc.repository.dissimilarity.DAOXmlDissimilarityMatrix;
 import it.unibas.trikc.repository.dissimilarity.IDAODissimilarityMatrix;
-import it.unibas.trikc.repository.reduction.DAOMockTestSuite;
 import it.unibas.trikc.repository.reduction.DAOXmlTestSuite;
 import it.unibas.trikc.repository.reduction.IDAOTestSuite;
 
@@ -28,6 +25,11 @@ public class TestClosureCompiler {
 
 	private ICoverage coverage;
 	private DissimilarityMatrix dm;
+	private TestSuite testSuite;
+	private TestSuite testSuiteLevel0;
+	private TestSuite testSuiteLevel1;
+	private Clusters clustersLevel0;
+	private Clusters clustersLevel1;
 	
 	private String path = System.getProperty("user.dir");
 	private String os = System.getProperty("os.name");
@@ -38,12 +40,12 @@ public class TestClosureCompiler {
 		if (isWindows(os)) {
 			binPath = path + "\\test_resources\\closure-compiler-master\\build\\classes";
 			testSuiteName = "com.google.debugging.sourcemap.MyTestSuite";
-			testPath = path + "\\test_resources\\closure-compiler-master\\build\\test-classes";
+			testPath = path + "\\test_resources\\closure-compiler-master\\build\\test";
 			libPath = path + "\\test_resources\\closure-compiler-master\\lib";
 		} else if (isMac(os)) {
 			binPath = path + "/test_resources/closure-compiler-master/build/classes";
 			testSuiteName = "com.google.debugging.sourcemap.MyTestSuite";
-			testPath = path + "/test_resources/closure-compiler-master/build/test-classes";
+			testPath = path + "/test_resources/closure-compiler-master/build/test";
 			libPath = path + "/test_resources/closure-compiler-master/lib"; 
 		}
 	}
@@ -56,52 +58,81 @@ public class TestClosureCompiler {
 		return os.toLowerCase().contains("mac");
 	}
 	
+	
 	@Test
-	public void testCoverageFacage() {
+	public void testClosureCompiler() {
+		//Coverage
 		CoverageFacade coverageFacade = new CoverageFacade();
 		try {
 			coverageFacade.runCoverage(binPath, testSuiteName, testPath, libPath);
+			this.coverage = coverageFacade.getCoverage();
+			this.testSuite = this.coverage.getTestSuite();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		this.coverage = coverageFacade.getCoverage();
-		String nameFile = "testSuiteCoverage_ClosureCompiler";
-		IDAOTestSuite daoTs = new DAOMockTestSuite();
-		try {
-			daoTs.save(this.coverage.getTestSuite(), nameFile);
-			System.out.println("Salvato");
-		} catch (XMLException e) {
-			e.printStackTrace();
-		}
-		Assert.assertTrue("Coverage: ",this.coverage.getTestSuite().getFullName().equals("com.google.debugging.sourcemap.MyTestSuite"));
-	}
-	
-	//@Test
-	public void testDissimilarity() {
-		IDAOTestSuite daoTs = new DAOXmlTestSuite();
+		System.out.println("-------CoverageDone-------");
+		
+		//Dissimilarity
 		DissimilarityFactory df = DissimilarityFactory.getInstance();
 		IStrategyDissimilarity skd = df.getDissimilarity(Constants.STRING_KERNEL_DISSIMILARITY);
+		dm = skd.computeDissimilarity(this.testSuite);
+		
+		System.out.println("-------DissimilarityDone-------\n");
+		
+		//Clustering level 0
+		this.clustersLevel0 = ClusteringFactory.getInstance().getClustering(Constants.HIERARCHICAL_CLUSTERING)
+					.clusterTestCases(dm, 0, Constants.COMPLETE_LINKAGE_STRATEGY);
+
+		System.out.println("-------ClusteringLevel0Done-------\n");
+		//Clustering level 1
+
+		this.clustersLevel1 = ClusteringFactory.getInstance().getClustering(Constants.HIERARCHICAL_CLUSTERING)
+					.clusterTestCases(dm, 1, Constants.COMPLETE_LINKAGE_STRATEGY);
+		
+		System.out.println("-------ClusteringLevel1Done-------\n");
+		
+		//Reduction level0
+		ReducingFactory rd = ReducingFactory.getInstance();
+		IStrategyReduction mcr = rd.getReduction(Constants.MOST_COVERING_REDUCTION);
+		this.testSuiteLevel0 = mcr.reduceTestSuite(this.clustersLevel0);
+		
+		System.out.println("-------ReductionLevel0Done-------\n");
+		
+		//Reduction level1
+		this.testSuiteLevel1 = mcr.reduceTestSuite(this.clustersLevel1);
+
+		System.out.println("-------ReductionLevel1Done------- \n");
 		
 		try {
-			TestSuite ts = daoTs.load("testSuiteCoverage_ClosureCompiler");
-			System.out.println("---Caricata");
-			dm = skd.computeDissimilarity(ts);
-		} catch (XMLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} 
-		assertEquals(6, dm.getSize());
-		assertEquals(Double.valueOf(0), dm.getValueAt(0, 0));
-		assertEquals(Double.valueOf(0), dm.getValueAt(1, 1));
-		IDAODissimilarityMatrix dao = new DAOMockDissimilarityMatrix(); 
-		try {
-			dao.save(dm, "DissimilarityMatrix_changeReqs_junit.All_tests");
-		} catch (XMLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			String nameFile = "testSuiteCoverage_com.google.debugging.sourcemap.MyTestSuite_ClosureCompiler";
+			IDAOTestSuite daoTs = new DAOXmlTestSuite();
+			daoTs.save(this.coverage.getTestSuite(), nameFile);
+			
+			IDAODissimilarityMatrix dao = new DAOXmlDissimilarityMatrix(); 
+			dao.save(dm, "DissimilarityMatrix_com.google.debugging.sourcemap.MyTestSuite_ClosureCompiler");
+
+			IDAOClusters daoc = new DAOXmlClusters();
+			daoc.save(this.clustersLevel0, "Clustering_com.google.debugging.sourcemap.MyTestSuite_ClosureCompiler_0");
+			daoc.save(this.clustersLevel1, "Clustering_com.google.debugging.sourcemap.MyTestSuite_ClosureCompiler_1");
+			
+			daoTs.save(this.testSuiteLevel0, "Reduction_com.google.debugging.sourcemap.MyTestSuite_ClosureCompiler_0");
+			daoTs.save(this.testSuiteLevel1, "Reduction_com.google.debugging.sourcemap.MyTestSuite_ClosureCompiler_1");
+
+		}catch(XMLException e) {
+			
 		}
+		System.out.println("-------OriginalTestSuite-------\n");
 		
-		assertEquals(Double.valueOf(0), dm.getValueAt(4, 4));
+		System.out.println(this.testSuite);
+		
+		System.out.println("\n-------ReductTestSuiteWithClusterLevel0-------\n");
+
+		System.out.println(this.testSuiteLevel0);
+		
+		System.out.println("\n-------ReductTestSuiteWithClusterLevel1-------\n");
+
+		System.out.println(this.testSuiteLevel1);
+		
 	}
 
 }

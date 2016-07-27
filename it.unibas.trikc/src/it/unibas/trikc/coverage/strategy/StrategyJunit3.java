@@ -26,6 +26,7 @@ import junit.framework.Test;
 public class StrategyJunit3 extends AbstractStrategyJunit{
 
 	
+	@SuppressWarnings("restriction")
 	@Override
 	public TestSuite executeCoverage() throws Exception {
 		junit.framework.TestSuite allTestsSuite = null;
@@ -49,7 +50,6 @@ public class StrategyJunit3 extends AbstractStrategyJunit{
 
 					try{
 						Request request = Request.method(testClassToCoverage, tmp[0]);
-						//System.out.println("--- Method " + tmp[0]);
 						new JUnitCore().run(request);
 						CoverageBuilder coverageBuilder = getJacocoServices().collectAnalysis(super.getClazz().getFullName());
 						analyzeResult(coverageBuilder, getClazz(), testCase);	

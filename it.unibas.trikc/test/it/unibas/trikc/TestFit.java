@@ -1,35 +1,24 @@
 package it.unibas.trikc;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
-import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import it.unibas.trikc.coverage.Coverage;
 import it.unibas.trikc.coverage.CoverageFacade;
 import it.unibas.trikc.coverage.ICoverage;
-import it.unibas.trikc.coverage.Loader;
 import it.unibas.trikc.modelEntity.Clusters;
 import it.unibas.trikc.modelEntity.DissimilarityMatrix;
-import it.unibas.trikc.modelEntity.Sut;
 import it.unibas.trikc.modelEntity.TestSuite;
 import it.unibas.trikc.modelEntity.clustering.ClusteringFactory;
-import it.unibas.trikc.modelEntity.clustering.IStrategyClustering;
-import it.unibas.trikc.modelEntity.clustering.StrategyHierarchicalClustering;
 import it.unibas.trikc.modelEntity.dissimilarity.DissimilarityFactory;
 import it.unibas.trikc.modelEntity.dissimilarity.IStrategyDissimilarity;
 import it.unibas.trikc.modelEntity.reduction.IStrategyReduction;
 import it.unibas.trikc.modelEntity.reduction.ReducingFactory;
 import it.unibas.trikc.repository.XMLException;
-import it.unibas.trikc.repository.clusters.DAOMockClusters;
+import it.unibas.trikc.repository.clusters.DAOXmlClusters;
 import it.unibas.trikc.repository.clusters.IDAOClusters;
-import it.unibas.trikc.repository.dissimilarity.DAOMockDissimilarityMatrix;
 import it.unibas.trikc.repository.dissimilarity.DAOXmlDissimilarityMatrix;
 import it.unibas.trikc.repository.dissimilarity.IDAODissimilarityMatrix;
-import it.unibas.trikc.repository.reduction.DAOMockTestSuite;
 import it.unibas.trikc.repository.reduction.DAOXmlTestSuite;
 import it.unibas.trikc.repository.reduction.IDAOTestSuite;
 
@@ -37,6 +26,11 @@ public class TestFit {
 
 	private ICoverage coverage;
 	private DissimilarityMatrix dm;
+	private TestSuite testSuite;
+	private TestSuite testSuiteLevel0;
+	private TestSuite testSuiteLevel1;
+	private Clusters clustersLevel0;
+	private Clusters clustersLevel1;
 	
 	private String path = System.getProperty("user.dir");
 	private String os = System.getProperty("os.name");
@@ -67,126 +61,80 @@ public class TestFit {
 	
 	
 	@Test
-	public void testCoverageFacade() {
+	public void testAveCalcFitTables() {
+		//Coverage
 		CoverageFacade coverageFacade = new CoverageFacade();
-		String path = System.getProperty("user.dir");
 		try {
 			coverageFacade.runCoverage(binPath, testSuiteName, testPath, libPath);
+			this.coverage = coverageFacade.getCoverage();
+			this.testSuite = this.coverage.getTestSuite();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		this.coverage = coverageFacade.getCoverage();
-		String nameFile = "testSuiteCoverage_AveCalcJUnit3";
-		IDAOTestSuite daoTs = new DAOMockTestSuite();
-		try {
-			daoTs.save(this.coverage.getTestSuite(), nameFile);
-			System.out.println("Salvato");
-		} catch (XMLException e) {
-			e.printStackTrace();
-		}
-		Assert.assertTrue("Coverage: ",this.coverage.getTestSuite().getFullName().equals("changeReqs_junit.All_tests"));
-	}
-
-	//@Test
-	public void testDissimilarity() {
-		IDAOTestSuite daoTs = new DAOMockTestSuite();
+		System.out.println("-------CoverageDone-------");
+		
+		//Dissimilarity
 		DissimilarityFactory df = DissimilarityFactory.getInstance();
 		IStrategyDissimilarity skd = df.getDissimilarity(Constants.STRING_KERNEL_DISSIMILARITY);
+		dm = skd.computeDissimilarity(this.testSuite);
 		
-		try {
-			TestSuite ts = daoTs.load("testSuiteCoverage_changeReqs_junit.All_tests_AveCalcFitTables");
-			System.out.println("---Caricata");
-			dm = skd.computeDissimilarity(ts);
-		} catch (XMLException e1) {
-			e1.printStackTrace();
-		} 
-		assertEquals(25, dm.getSize());
-		assertEquals(Double.valueOf(0), dm.getValueAt(0, 0));
-		assertEquals(Double.valueOf(0), dm.getValueAt(1, 1));
-		IDAODissimilarityMatrix dao = new DAOMockDissimilarityMatrix(); 
-		try {
-			dao.save(dm, "DissimilarityMatrix_changeReqs_junit.All_tests_AveCalcFitTables");
-		} catch (XMLException e) {
-			e.printStackTrace();
-		}
+		System.out.println("-------DissimilarityDone-------\n");
 		
-		assertEquals(Double.valueOf(0), dm.getValueAt(4, 4));
-	}
-	
-	//@Test
-	public void testClusteringLevel0() {
-		IDAODissimilarityMatrix daom = new DAOMockDissimilarityMatrix();
-		DissimilarityMatrix dm;
-		IDAOClusters daoc = new DAOMockClusters();
-		try {
-			dm = daom.load("DissimilarityMatrix_changeReqs_junit.All_tests_AveCalcFitTables");
-			System.out.println("caricata latazza");
-			Clusters clusters = ClusteringFactory.getInstance().getClustering(Constants.HIERARCHICAL_CLUSTERING)
+		//Clustering level 0
+		this.clustersLevel0 = ClusteringFactory.getInstance().getClustering(Constants.HIERARCHICAL_CLUSTERING)
 					.clusterTestCases(dm, 0, Constants.COMPLETE_LINKAGE_STRATEGY);
-			assertEquals(3, clusters.getClusters().size());
-		    daoc.save(clusters, "Clustering_changeReqs_junit.All_tests_AveCalcFitTables_0");
-		} catch (XMLException e) {
-			e.printStackTrace();
-		}
 
-	}
+		System.out.println("-------ClusteringLevel0Done-------\n");
+		//Clustering level 1
 
-	//@Test
-	public void testClusteringLevel1() {
-		IDAODissimilarityMatrix daom = new DAOMockDissimilarityMatrix();
-		DissimilarityMatrix dm;
-		IDAOClusters daoc = new DAOMockClusters();
-		try {
-			dm = daom.load("DissimilarityMatrix_changeReqs_junit.All_tests_AveCalcFitTables");
-			System.out.println("caricata latazza");
-			// IStrategyClustering strategy = new
-			// StrategyHierarchicalClustering();
-			Clusters clusters = ClusteringFactory.getInstance().getClustering(Constants.HIERARCHICAL_CLUSTERING)
+		this.clustersLevel1 = ClusteringFactory.getInstance().getClustering(Constants.HIERARCHICAL_CLUSTERING)
 					.clusterTestCases(dm, 1, Constants.COMPLETE_LINKAGE_STRATEGY);
-			assertEquals(1, clusters.getClusters().size());
-		    daoc.save(clusters, "Clustering_changeReqs_junit.All_tests_AveCalcFitTables_1");
-		} catch (XMLException e) {
-			e.printStackTrace();
-		}
+		
+		System.out.println("-------ClusteringLevel1Done-------\n");
+		
+		//Reduction level0
+		ReducingFactory rd = ReducingFactory.getInstance();
+		IStrategyReduction mcr = rd.getReduction(Constants.MOST_COVERING_REDUCTION);
+		this.testSuiteLevel0 = mcr.reduceTestSuite(this.clustersLevel0);
+		
+		System.out.println("-------ReductionLevel0Done-------\n");
+		
+		//Reduction level1
+		this.testSuiteLevel1 = mcr.reduceTestSuite(this.clustersLevel1);
 
-	}
-	
-	
-	//@Test
-	public void TestReductionClusters0() {
-		IDAOClusters daoc = new DAOMockClusters();
-		Clusters clusters;
+		System.out.println("-------ReductionLevel1Done------- \n");
+		
 		try {
-			clusters = daoc.load("Clustering_changeReqs_junit.All_tests_AveCalcFitTables_0");
-			ReducingFactory rd = ReducingFactory.getInstance();
-			IStrategyReduction mcr = rd.getReduction(Constants.MOST_COVERING_REDUCTION);
-			TestSuite ts = mcr.reduceTestSuite(clusters);
-
-			assertEquals(3, ts.getTestCases().size());
+			String nameFile = "testSuiteCoverage_changeReqs_junit.All_tests_AveCalcFitTables";
+			IDAOTestSuite daoTs = new DAOXmlTestSuite();
+			daoTs.save(this.coverage.getTestSuite(), nameFile);
 			
-		} catch (XMLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			IDAODissimilarityMatrix dao = new DAOXmlDissimilarityMatrix(); 
+			dao.save(dm, "DissimilarityMatrix_changeReqs_junit.All_tests_AveCalcFitTables");
+
+			IDAOClusters daoc = new DAOXmlClusters();
+			daoc.save(this.clustersLevel0, "Clustering_changeReqs_junit.All_tests_AveCalcFitTables_0");
+			daoc.save(this.clustersLevel1, "Clustering_changeReqs_junit.All_tests_AveCalcFitTables_1");
+			
+			daoTs.save(this.testSuiteLevel0, "Reduction_changeReqs_junit.All_tests_AveCalcFitTables_0");
+			daoTs.save(this.testSuiteLevel1, "Reduction_changeReqs_junit.All_tests_AveCalcFitTables_1");
+
+		}catch(XMLException e) {
+			
 		}
+		System.out.println("-------OriginalTestSuite-------\n");
+		
+		System.out.println(this.testSuite);
+		
+		System.out.println("\n-------ReductTestSuiteWithClusterLevel0-------\n");
+
+		System.out.println(this.testSuiteLevel0);
+		
+		System.out.println("\n-------ReductTestSuiteWithClusterLevel1-------\n");
+
+		System.out.println(this.testSuiteLevel1);
 		
 	}
 	
-	//@Test
-	public void TestReductionClusters1() {
-		IDAOClusters daoc = new DAOMockClusters();
-		Clusters clusters;
-		try {
-			clusters = daoc.load("Clustering_changeReqs_junit.All_tests_AveCalcFitTables_1");
-			ReducingFactory rd = ReducingFactory.getInstance();
-			IStrategyReduction mcr = rd.getReduction(Constants.MOST_COVERING_REDUCTION);
-			TestSuite ts = mcr.reduceTestSuite(clusters);
-
-			assertEquals(1, ts.getTestCases().size());
-			
-		} catch (XMLException e) {
-			e.printStackTrace();
-		}
-		
-	}
 
 }

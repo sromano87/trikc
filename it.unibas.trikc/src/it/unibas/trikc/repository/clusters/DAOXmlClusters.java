@@ -1,14 +1,12 @@
 package it.unibas.trikc.repository.clusters;
 
 import java.io.File;
-import java.net.URL;
 
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
 
 import it.unibas.trikc.modelEntity.Clusters;
 import it.unibas.trikc.repository.XMLException;
-import it.unibas.trikc.views.PageCoverage;
 
 public class DAOXmlClusters implements IDAOClusters {
 
@@ -51,4 +49,33 @@ public class DAOXmlClusters implements IDAOClusters {
 		return clusters;
 	}
 
+	
+	public boolean isWindows(String os) {
+		return os.toLowerCase().contains("win");
+	}
+	
+	public boolean isMac(String os) {
+		return os.toLowerCase().contains("mac");
+	}
+	
+	
+	@Override
+	public Clusters loadForTest(String nameFile) throws XMLException {
+		String path = System.getProperty("user.dir"); 
+		if (isWindows(System.getProperty("os.name"))) {
+			path = path + "\\test_resources\\xml_resources\\";
+		} else if (isMac(System.getProperty("os.name"))) {
+			path = path + "/test_resources/xml_resources/";
+		}
+		Serializer serializer = new Persister(); 
+		File result = new File(path + nameFile + ".xml"); 
+		
+		Clusters clusters = null; 
+		try {
+			clusters = serializer.read(Clusters.class, result); 
+		} catch (Exception e) {
+			throw new XMLException(e);
+		}
+		return clusters;
+	}
 }

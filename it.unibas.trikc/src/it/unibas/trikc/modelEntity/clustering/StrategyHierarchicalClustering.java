@@ -11,7 +11,7 @@ import it.unibas.trikc.modelEntity.clustering.algorithm.LinkageStrategy;
 import it.unibas.trikc.modelEntity.clustering.algorithm.SingleLinkageStrategy;
 import it.unibas.trikc.modelEntity.clustering.visitor.IVisitor;
 import it.unibas.trikc.modelEntity.clustering.visitor.VisitorCluster;
-import it.unibas.trikc.repository.dissimilarity.DAOMockDissimilarityMatrix;
+
 
 public class StrategyHierarchicalClustering implements IStrategyClustering {
 	
@@ -66,7 +66,7 @@ public class StrategyHierarchicalClustering implements IStrategyClustering {
 
 	}
 	
-	public static void main(String[] args) throws Exception {
+	/*public static void main(String[] args) throws Exception {
 		DAOMockDissimilarityMatrix daoDM = new DAOMockDissimilarityMatrix();
 		DissimilarityMatrix matrix = daoDM.load(null);
 				
@@ -93,7 +93,7 @@ public class StrategyHierarchicalClustering implements IStrategyClustering {
 		visitor.visit(cluster, level);
 		
 		System.out.println("Clustering completato");
-	}
+	}*/
 	
 	
 }

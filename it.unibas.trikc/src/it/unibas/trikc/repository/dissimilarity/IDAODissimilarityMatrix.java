@@ -6,6 +6,7 @@ import it.unibas.trikc.repository.XMLException;
 public interface IDAODissimilarityMatrix {
 	
 	public void save (DissimilarityMatrix matrix, String nameFile) throws XMLException;
-	public DissimilarityMatrix load(String nameFile) throws XMLException; 
+	public DissimilarityMatrix load(String nameFile) throws XMLException;
+	public DissimilarityMatrix loadForTest(String nameFile) throws XMLException; 
 
 }

@@ -1,14 +1,13 @@
 package it.unibas.trikc.repository.dissimilarity;
 
 import java.io.File;
-import java.net.URL;
 
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
 
 import it.unibas.trikc.modelEntity.DissimilarityMatrix;
 import it.unibas.trikc.repository.XMLException;
-import it.unibas.trikc.views.PageCoverage;
+
 
 public class DAOXmlDissimilarityMatrix implements IDAODissimilarityMatrix {
 
@@ -50,4 +49,34 @@ public class DAOXmlDissimilarityMatrix implements IDAODissimilarityMatrix {
 		return matrix;
 	}
 	
+	
+	public boolean isWindows(String os) {
+		return os.toLowerCase().contains("win");
+	}
+	
+	public boolean isMac(String os) {
+		return os.toLowerCase().contains("mac");
+	}
+	
+	
+	
+	@Override
+	public DissimilarityMatrix loadForTest(String nameFile) throws XMLException {
+		String path = System.getProperty("user.dir"); 
+		if (isWindows(System.getProperty("os.name"))) {
+			path = path + "\\test_resources\\xml_resources\\";
+		} else if (isMac(System.getProperty("os.name"))) {
+			path = path + "/test_resources/xml_resources/";
+		}
+		Serializer serializer = new Persister(); 
+		File result = new File(path + nameFile + ".xml"); 
+		
+		DissimilarityMatrix matrix = null; 
+		try {
+			matrix = serializer.read(DissimilarityMatrix.class, result); 
+		} catch (Exception e) {
+			throw new XMLException(e);
+		}
+		return matrix;
+	}
 }

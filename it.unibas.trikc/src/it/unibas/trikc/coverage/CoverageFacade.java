@@ -41,10 +41,8 @@ public class CoverageFacade {
 		this.coverage.executeCoverage();
 		
 		System.out.println("TEST SUITE: " + this.coverage.getTestSuite().toString());
-		
 		IDAOTestSuite dao = new DAOXmlTestSuite();
 		dao.save(coverage.getTestSuite(), "testSuiteCoverage_" + testSuite);
-		
 	}
 
 	public ICoverage getCoverage() {

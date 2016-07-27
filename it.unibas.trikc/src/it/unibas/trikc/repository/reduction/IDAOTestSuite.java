@@ -7,5 +7,6 @@ public interface IDAOTestSuite {
 	
 	public void save (TestSuite testSuite, String nameFile) throws XMLException;
 	public TestSuite load(String nameFile)throws XMLException;
+	public TestSuite loadForTest(String nameFile) throws XMLException;
 	
 }
